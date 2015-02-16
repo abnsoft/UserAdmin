@@ -25,5 +25,19 @@
     <context:component-scan base-package="abc.def.web.controller" />
 
     <mvc:annotation-driven />
+    <!-- _class="org.springframework.web.servlet.view.InternalResourceViewResolver" -->
+    <!-- class="org.springframework.web.servlet.view.UrlBasedViewResolver" -->
+
+    <bean
+        id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+    >
+        <property
+            name="prefix"
+            value="/WEB-INF/jsp/" />
+        <property name="suffix">
+            <value>.jspx</value>
+        </property>
+    </bean>
 
 </beans>
