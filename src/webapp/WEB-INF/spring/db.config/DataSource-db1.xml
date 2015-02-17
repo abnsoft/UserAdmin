@@ -1,0 +1,28 @@
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+>
+
+    <bean
+        id="dataSourceDB1"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    >
+
+        <property
+            name="driverClassName"
+            value="${db1.jdbc.driverClassName}" />
+        <property
+            name="url"
+            value="${db1.jdbc.url}?zeroDateTimeBehavior=convertToNull" />
+        <property
+            name="username"
+            value="${db1.jdbc.username}" />
+        <property
+            name="password"
+            value="${db1.jdbc.password}" />
+
+    </bean>
+
+</beans>

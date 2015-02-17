@@ -14,4 +14,4 @@
  * @author annik
  *
  */
-package abc.def;
+package abc.def.data.repositories;

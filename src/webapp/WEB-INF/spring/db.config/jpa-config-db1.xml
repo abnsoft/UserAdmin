@@ -1,0 +1,60 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+>
+
+    <!-- SPRING - JPA -->
+    <!-- // tell Spring Data to scan a package for repository interfaces // -->
+    <jpa:repositories base-package="abc.def.data.repositories" />
+
+    <!-- // ENTITY MANAGER // -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSourceDB1" />
+        
+        <!-- // tell SPRING scan @Entities here // -->
+        <property name="packagesToScan" value="abc.def.data.model" />
+        <property name="jpaVendorAdapter">
+
+            <!-- // JPA Adapter // -->
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="true" />
+                <property name="showSql" value="false" />
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
+                <property name="database" value="MYSQL" />
+
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.use_sql_comments">${jpa.vendor.showsql}</prop>
+                <prop key="hibernate.generate_statistics">${jpa.vendor.generate.statistics}</prop>
+                <prop key="hibernate.archive.autodetection">class</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${cache.use.secondLevel}</prop>
+                <prop key="hibernate.cache.use_query_cache">${cache.use.query}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <!-- <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop> -->
+                <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+            </props>
+            <!-- <value>
+                hibernate.cache.use_second_level_cache = true
+                hibernate.cache.region.factory_class =
+                org.hibernate.cache.ehcache.EhCacheRegionFactory
+                hibernate.cache.use_query_cache = true
+                hibernate.generate_statistics = true
+            </value> -->
+        </property>
+    </bean>
+
+    <!-- // JPA TRANSACTION MANAGER // -->
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+        </property>
+    </bean>
+
+
+
+
+</beans>

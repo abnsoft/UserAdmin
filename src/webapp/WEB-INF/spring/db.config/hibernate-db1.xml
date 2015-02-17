@@ -1,0 +1,48 @@
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+>
+
+
+    <!-- Hibernate session factory -->
+    <bean
+        id="sessionFactoryDB1"
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+    >
+
+        <property
+            name="dataSource"
+            ref="dataSourceDB1" />
+
+        <property name="hibernateProperties">
+            <props>
+                <!-- <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <!-- +1 -->
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">validate</prop> <!-- create | validate -->
+                <!-- Enable Hibernate's automatic session context management Spring manages the transaction, and 
+                    it doesn't need of that the session is holding in a hibernate thread. <prop key="hibernate.current_session_context_class">thread</prop> -->
+                <!-- <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate3.SpringSessionContext</prop> -->
+                <!-- -->
+                <prop key="hibernate.connection.zeroDateTimeBehavior">convertToNull</prop>
+                <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
+
+            </props>
+        </property>
+
+        <property
+            name="packagesToScan"
+            value="net.regmaster.model.dbwmhl" />
+
+        <!-- <property name="configurationClass"> <value>org.hibernate.cfg.AnnotationConfiguration</value> </property> 
+            <property name="exposeTransactionAwareSessionFactory"> <value>false</value> </property> -->
+
+    </bean>
+
+
+</beans>
