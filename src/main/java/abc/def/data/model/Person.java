@@ -92,11 +92,12 @@ public class Person {
      * @param created
      * @param udated
      */
-    public Person( String fullName, String email, String role, String timezone, DateTime created,
+    public Person( String fullName, String email, String password, String role, String timezone, DateTime created,
             DateTime udated, boolean enabled ) {
 
         this.fullName = fullName;
         this.email = email;
+        this.password = password;
         this.role = role;
         this.timezone = timezone;
         this.created = created;
@@ -114,11 +115,12 @@ public class Person {
      * @param created
      * @param udated
      */
-    public Person( String fullName, String email, String role, String timezone, DateTime created,
+    public Person( String fullName, String email, String password, String role, String timezone, DateTime created,
             DateTime udated ) {
 
         this.fullName = fullName;
         this.email = email;
+        this.password = password;
         this.role = role;
         this.timezone = timezone;
         this.created = created;

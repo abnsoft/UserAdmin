@@ -26,7 +26,7 @@
 
     <!-- Auto scan the components -->
     <context:annotation-config />
-    <context:component-scan base-package="abc.def.web.controller" />
+    <context:component-scan base-package="abc.def" />
 
     <mvc:resources mapping="/rs/**" location="/rs/" />
 

@@ -22,7 +22,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    
     <!--  -->
     <filter>
         <description>This provides a hook into the Spring Security web infrastructure. DelegatingFilterProxy 
@@ -67,6 +70,6 @@
     </error-page>
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
-        <location>/WEB-INF/errors/</location>
+        <location>/WEB-INF/errors/index.jsp</location>
     </error-page>
 </web-app>

@@ -11,11 +11,17 @@ package abc.def.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import abc.def.data.service.PersonService;
+import abc.def.web.beans.FormRegister;
 
 /**
  * @author annik
@@ -23,6 +29,14 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class RootController {
+
+    private static final Logger LOG = LoggerFactory.getLogger( RootController.class );
+
+    @Autowired
+    private PersonService personService;
+
+//    @Autowired( required = false )
+//    private FormRegister frmReg;
 
     @RequestMapping( value = "/index.htm" )
     @ResponseBody
@@ -50,7 +64,10 @@ public class RootController {
     }
 
     @RequestMapping( value = "/register.htm" )
-    public ModelAndView userUrl( HttpServletRequest request, HttpServletResponse response ) {
+    public ModelAndView userUrl( @ModelAttribute FormRegister frmReg, HttpServletRequest request,
+            HttpServletResponse response ) {
+
+        LOG.debug( "formReg = {}", frmReg.toString() );
 
         ModelAndView model = new ModelAndView( "register" );
         model.addObject( "msg", "user" );

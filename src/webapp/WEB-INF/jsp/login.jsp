@@ -6,7 +6,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=utf-8">
 <TITLE>Insert title here</TITLE>
 
-	<LINK href='<c:url value="/rs/css/main.css" />'  />
+	<LINK href='<c:url value="/rs/css/main.css" />' rel='stylesheet' />
 
 </HEAD>
 <BODY>
