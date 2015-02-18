@@ -162,9 +162,15 @@
             <artifactId>logback-ext-spring</artifactId>
             <version>0.1.2</version>
         </dependency>
+        <!-- // SPRING SECURITY // -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
+            <version>${spring-security-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
             <version>${spring-security-version}</version>
         </dependency>
         <dependency>
@@ -217,6 +223,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
             <version>${hibernate-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
         </dependency>
     </dependencies>
     <!-- // BUILD // -->

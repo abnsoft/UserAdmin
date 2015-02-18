@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+body {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.loginTable { border: 1px solid #900; }
+
+.loginTableHeader {
+    background-color: #930;
+    font-size: x-large;
+    color: #FFF;
+}
+
+.inputFullSize { width: 100%; }
+
+.underlineDashed {
+    border-bottom-width: 1px;
+    border-bottom-style: dashed;
+    border-bottom-color: #CCC;
+}

@@ -13,6 +13,9 @@
     <!-- // configure manage of transactions using annotations @Transactional // -->
     <tx:annotation-driven />
 
+    <!-- // SPRING-SECURITY // -->
+    <import resource="security-servlet.xml" />
+
     <!-- // DB1 - Database Configuration // -->
     <context:property-placeholder location="/WEB-INF/spring/db.config/jdbc-db1.properties" />
 

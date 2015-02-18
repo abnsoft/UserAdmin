@@ -31,13 +31,58 @@ public class RootController {
         return "hello";
     }
 
-    @RequestMapping( value = "/test.htm" )
-    @ResponseBody
-    public ModelAndView testUrl( HttpServletRequest request, HttpServletResponse response ) {
+//    @RequestMapping( value = "/test.htm" )
+//    public ModelAndView testUrl( HttpServletRequest request, HttpServletResponse response ) {
+//
+//        ModelAndView model = new ModelAndView( "test" );
+//        model.addObject( "msg", "test" );
+//
+//        return model;
+//    }
 
-        ModelAndView model = new ModelAndView( "test" );
-        model.addObject( "msg", "Controller Interface Example!" );
-        
+    @RequestMapping( value = "/login.htm" )
+    public ModelAndView loginUrl( HttpServletRequest request, HttpServletResponse response ) {
+
+        ModelAndView model = new ModelAndView( "login" );
+        model.addObject( "msg", "login" );
+
         return model;
     }
+
+    @RequestMapping( value = "/register.htm" )
+    public ModelAndView userUrl( HttpServletRequest request, HttpServletResponse response ) {
+
+        ModelAndView model = new ModelAndView( "register" );
+        model.addObject( "msg", "user" );
+
+        return model;
+    }
+
+//    @RequestMapping( value = "/users-list.htm" )
+//    public ModelAndView usersListUrl( HttpServletRequest request, HttpServletResponse response ) {
+//        
+//        ModelAndView model = new ModelAndView( "users-list" );
+//        model.addObject( "msg", "user" );
+//        
+//        return model;
+//    }
+//    
+//    @RequestMapping( value = "/user-edit.htm" )
+//    public ModelAndView userEditUrl( HttpServletRequest request, HttpServletResponse response ) {
+//
+//        ModelAndView model = new ModelAndView( "userEdit" );
+//        model.addObject( "msg", "Edit" );
+//
+//        return model;
+//    }
+//
+//    @RequestMapping( value = "/new-file.htm" )
+//    public ModelAndView newUserUrl( HttpServletRequest request, HttpServletResponse response ) {
+//
+//        ModelAndView model = new ModelAndView( "NewFile" );
+//        model.addObject( "msg", "NewFile" );
+//
+//        return model;
+//    }
+
 }
