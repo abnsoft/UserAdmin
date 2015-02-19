@@ -42,7 +42,7 @@ public class Person {
     @GeneratedValue( strategy = GenerationType.AUTO )
     private long id;
 
-    @Column( name = "fullname", length = 128, nullable = false )
+    @Column( name = "fullname", length = 128, nullable = true )
     private String fullName;
 
     @Column( name = "email", length = 128, nullable = false, unique = true )
@@ -54,14 +54,14 @@ public class Person {
     @Column( name = "role", length = 16, nullable = false )
     private String role;
 
-    @Column( name = "timezone", length = 128, nullable = false, columnDefinition = "" )
+    @Column( name = "timezone", length = 128, nullable = false )
     private String timezone;
 
-    @Column( name = "created", columnDefinition = "DATETIME", nullable = false )
+    @Column( name = "created", nullable = false )
     @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" )
     private DateTime created;
 
-    @Column( name = "updated", columnDefinition = "DATETIME", nullable = false )
+    @Column( name = "updated",  nullable = false )
     @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" )
     private DateTime updated;
 

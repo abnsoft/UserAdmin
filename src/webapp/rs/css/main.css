@@ -23,3 +23,9 @@ body {
     border-bottom-style: dashed;
     border-bottom-color: #CCC;
 }
+
+.errorMsg {
+    font-family: Constantia, "Lucida Bright", "DejaVu Serif", Georgia, serif;
+    color: #F00;
+    font-size: medium;
+}

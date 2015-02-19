@@ -29,7 +29,7 @@ public interface PersonService {
      * @return registered new {@link Person}.
      * @throws PersonRegisterException
      */
-    Person registerPerson( String email, String password ) throws PersonRegisterException;
+    Person registerPerson( String email, String password );
 
     /**
      * Process login user with given parameters.

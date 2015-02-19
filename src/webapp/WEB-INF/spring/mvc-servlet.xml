@@ -28,7 +28,9 @@
     <context:annotation-config />
     <context:component-scan base-package="abc.def" />
 
-    <mvc:resources mapping="/rs/**" location="/rs/" />
+    <mvc:resources
+        mapping="/rs/**"
+        location="/rs/" />
 
     <mvc:annotation-driven />
     <!-- _class="org.springframework.web.servlet.view.InternalResourceViewResolver" -->
@@ -45,7 +47,16 @@
             name="suffix"
             value=".jsp" />
     </bean>
-    
+
     <context:annotation-config />
+
+    <bean
+        id="messageSource"
+        class="org.springframework.context.support.ResourceBundleMessageSource"
+    >
+        <property
+            name="basename"
+            value="validation" />
+    </bean>
 
 </beans>

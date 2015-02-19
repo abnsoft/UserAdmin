@@ -12,7 +12,6 @@
  */
 package abc.def.data.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import abc.def.data.Utils;
-import abc.def.data.exception.PersonRegisterException;
 import abc.def.data.model.Person;
 import abc.def.data.repositories.PersonRepository;
 
@@ -29,7 +26,7 @@ import abc.def.data.repositories.PersonRepository;
  * @author annik
  *
  */
-@Service("personService")
+@Service( "personService" )
 public class PersonServiceImpl implements PersonService {
 
     private final Logger LOG = LoggerFactory.getLogger( getClass() );
@@ -42,18 +39,7 @@ public class PersonServiceImpl implements PersonService {
      * @see abc.def.data.service.PesronService#registerPerson(java.lang.String, java.lang.String)
      */
     @Override
-    public Person registerPerson( String email, String password ) throws PersonRegisterException {
-
-        if ( StringUtils.isBlank( email ) ) {
-            throw new PersonRegisterException( "Email cannot be blank." );
-        }
-        if ( StringUtils.isBlank( password ) ) {
-            throw new PersonRegisterException( "Password cannot be blank." );
-        }
-        if ( Utils.validatePassword( password ) ) {
-            throw new PersonRegisterException( "Password have to contains: length 6+ characters, "
-                    + "1 digit and 1 upper case letter." );
-        }
+    public Person registerPerson( String email, String password ) {
 
         password = new BCryptPasswordEncoder().encode( password );
 
@@ -63,10 +49,10 @@ public class PersonServiceImpl implements PersonService {
         DateTime created = new DateTime();
         DateTime udated = new DateTime();
 
-        Person newPerson = new Person( fullName, email, password, role, timezone, created, udated );
-        LOG.debug( "Prepared to creat new person {}", newPerson.toString() );
+        Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
+        LOG.debug( "Prepared to creating new person {}", newPerson.toString() );
 
-        return personRepository.save( newPerson );
+        return personRepository. save( newPerson );
     }
 
     /*
