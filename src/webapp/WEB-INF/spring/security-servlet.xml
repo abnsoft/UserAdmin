@@ -34,7 +34,7 @@
 
         <form-login
             login-page="/login.htm"
-            default-target-url="/users-list.htm"
+            default-target-url="/admin/users-list.htm"
             authentication-failure-url="/login.htm" />
 
         <logout

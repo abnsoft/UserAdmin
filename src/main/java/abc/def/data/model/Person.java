@@ -58,11 +58,15 @@ public class Person {
     private String timezone;
 
     @Column( name = "created", nullable = false )
-    @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" )
+//    @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" )
+    // ^^^^^^~ IT DOES NOT WORK WITH HIBERNATE 4.x
+    @Type( type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime" )
     private DateTime created;
 
-    @Column( name = "updated",  nullable = false )
-    @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" )
+    @Column( name = "updated", nullable = false )
+//    @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" ) 
+    // ^^^^^^~ IT DOES NOT WORK WITH HIBERNATE 4.x
+    @Type( type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime" )
     private DateTime updated;
 
     @Column( name = "isenabled", nullable = false )
@@ -92,8 +96,8 @@ public class Person {
      * @param created
      * @param udated
      */
-    public Person( String fullName, String email, String password, String role, String timezone, DateTime created,
-            DateTime udated, boolean enabled ) {
+    public Person( String fullName, String email, String password, String role, String timezone,
+            DateTime created, DateTime udated, boolean enabled ) {
 
         this.fullName = fullName;
         this.email = email;
@@ -115,8 +119,8 @@ public class Person {
      * @param created
      * @param udated
      */
-    public Person( String fullName, String email, String password, String role, String timezone, DateTime created,
-            DateTime udated ) {
+    public Person( String fullName, String email, String password, String role, String timezone,
+            DateTime created, DateTime udated ) {
 
         this.fullName = fullName;
         this.email = email;
@@ -136,8 +140,9 @@ public class Person {
     public String toString() {
 
         return String.format(
-                "Person [id=%s, fullName=%s, email=%s, role=%s, timezone=%s, created=%s, updated=%s]", id,
-                fullName, email, role, timezone, created, updated );
+                "Person [id=%s, fullName=%s, email=%s, password=%s, role=%s, timezone=%s, created=%s,"
+                        + " updated=%s, enabled=%s, addressCollection=%s]", id, fullName, email, password,
+                role, timezone, created, updated, enabled, addressCollection );
     }
 
 }

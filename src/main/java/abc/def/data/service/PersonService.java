@@ -12,6 +12,10 @@
  */
 package abc.def.data.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import abc.def.data.exception.PersonRegisterException;
 import abc.def.data.model.Person;
 
@@ -32,12 +36,10 @@ public interface PersonService {
     Person registerPerson( String email, String password );
 
     /**
-     * Process login user with given parameters.
+     * Get {@link Page} data of {@link Person}s
      * 
-     * @param email
-     * @param password
-     * @return logined {@link Person}.
+     * @param pageNumber
+     * @return {@link Page} of {@code pageNumber}
      */
-    Person loginPerson( String email, String password );
-
+    public List<Person> pagePersons( int pageNumber );
 }

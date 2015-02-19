@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 @Controller
-@RequestMapping( value = "/admin" )
+@RequestMapping( value = "/admin/su" )
 public class AdminSuController {
 
     /**

@@ -12,21 +12,33 @@
  */
 package abc.def.web.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import abc.def.data.model.Person;
+import abc.def.data.repositories.PersonRepository;
+import abc.def.data.service.PersonService;
 
 /**
  * @author annik
  *
  */
 @Controller
-@RequestMapping( value = "/admin/su" )
+@RequestMapping( value = "/admin" )
 public class AdminController {
+
+    @Autowired
+    private PersonService personService;
+
+    public static final String PATH_ADMIN = "/admin";
 
     /**
      * Show users list.
@@ -39,10 +51,16 @@ public class AdminController {
     @ResponseBody
     public ModelAndView usersListUrl( HttpServletRequest request, HttpServletResponse response ) {
 
-        ModelAndView model = new ModelAndView( "users-list" );
-        model.addObject( "msg", "user" );
+        int pageNumber = 1;
 
-        return model;
+        // read N records of users, using PAGING.
+        List<Person> pagesOfPerson = personService.pagePersons( pageNumber );
+
+        ModelAndView mav = new ModelAndView( PATH_ADMIN + "/users-list" );
+
+        // put users collection into model
+        mav.addObject( "persons", pagesOfPerson );
+
+        return mav;
     }
-
 }
