@@ -12,10 +12,12 @@
  */
 package abc.def.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import abc.def.data.model.Person;
 import abc.def.data.repositories.PersonRepository;
 import abc.def.data.service.PersonService;
+import abc.def.web.beans.FormUsersList;
 
 /**
  * @author annik
@@ -33,6 +36,7 @@ import abc.def.data.service.PersonService;
  */
 @Controller
 @RequestMapping( value = "/admin" )
+@Transactional
 public class AdminController {
 
     @Autowired
@@ -58,8 +62,12 @@ public class AdminController {
 
         ModelAndView mav = new ModelAndView( PATH_ADMIN + "/users-list" );
 
+        List<FormUsersList> frmUserList = new ArrayList<FormUsersList>();
+        for (Person person : pagesOfPerson) {
+            frmUserList.add( new FormUsersList( person ) );
+        }
         // put users collection into model
-        mav.addObject( "persons", pagesOfPerson );
+        mav.addObject( "persons", frmUserList );
 
         return mav;
     }

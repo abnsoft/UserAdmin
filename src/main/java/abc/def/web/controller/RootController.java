@@ -8,7 +8,6 @@
  */
 package abc.def.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import abc.def.data.exception.PersonRegisterException;
 import abc.def.data.model.Person;
 import abc.def.data.service.PersonService;
 import abc.def.web.beans.FormRegister;
@@ -65,10 +63,9 @@ public class RootController {
     }
 
     @RequestMapping( value = "/index.htm" )
-    @ResponseBody
     public String rootUrl() {
 
-        return "hello";
+        return "login";
     }
 
     @RequestMapping( value = "/login.htm" )

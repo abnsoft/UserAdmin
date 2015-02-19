@@ -27,10 +27,10 @@
 
         <intercept-url
             pattern="/admin/*"
-            access="ROLE_USER,ROLE_ADMIN" />
+            access="ROLE_USER,ROLE_EDITOR" />
         <intercept-url
             pattern="/admin/su/**"
-            access="ROLE_ADMIN" />
+            access="ROLE_EDITOR" />
 
         <form-login
             login-page="/login.htm"

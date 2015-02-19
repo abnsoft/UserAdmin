@@ -15,6 +15,8 @@ package abc.def.data.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,9 +77,12 @@ public class PersonServiceImpl implements PersonService {
 
         List<Person> personList = new ArrayList<Person>();
         if ( pages != null ) {
-            personList = pages.getContent();
+            for (Person person : pages.getContent()) {
+                personList.add( person );
+            }
         }
         return personList;
+
     }
 
 }

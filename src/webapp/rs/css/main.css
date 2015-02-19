@@ -35,3 +35,5 @@ body {
     border-bottom-style: dashed;
     border-bottom-color: #CCC;
 }
+
+.inactiveLink { color: #999; }

@@ -145,4 +145,214 @@ public class Person {
                 role, timezone, created, updated, enabled, addressCollection );
     }
 
+    /**
+     * Getter.
+     * 
+     * @return the id
+     */
+    public long getId() {
+
+        return id;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the fullName
+     */
+    public String getFullName() {
+
+        return fullName;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the email
+     */
+    public String getEmail() {
+
+        return email;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the password
+     */
+    public String getPassword() {
+
+        return password;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the role
+     */
+    public String getRole() {
+
+        return role;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the timezone
+     */
+    public String getTimezone() {
+
+        return timezone;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the created
+     */
+    public DateTime getCreated() {
+
+        return created;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the updated
+     */
+    public DateTime getUpdated() {
+
+        return updated;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the enabled
+     */
+    public boolean isEnabled() {
+
+        return enabled;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the addressCollection
+     */
+    public Collection<Address> getAddressCollection() {
+
+        return addressCollection;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param id
+     *            the id to set
+     */
+    public void setId( long id ) {
+
+        this.id = id;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param fullName
+     *            the fullName to set
+     */
+    public void setFullName( String fullName ) {
+
+        this.fullName = fullName;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param email
+     *            the email to set
+     */
+    public void setEmail( String email ) {
+
+        this.email = email;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param password
+     *            the password to set
+     */
+    public void setPassword( String password ) {
+
+        this.password = password;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param role
+     *            the role to set
+     */
+    public void setRole( String role ) {
+
+        this.role = role;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param timezone
+     *            the timezone to set
+     */
+    public void setTimezone( String timezone ) {
+
+        this.timezone = timezone;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param created
+     *            the created to set
+     */
+    public void setCreated( DateTime created ) {
+
+        this.created = created;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param updated
+     *            the updated to set
+     */
+    public void setUpdated( DateTime updated ) {
+
+        this.updated = updated;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param enabled
+     *            the enabled to set
+     */
+    public void setEnabled( boolean enabled ) {
+
+        this.enabled = enabled;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param addressCollection
+     *            the addressCollection to set
+     */
+    public void setAddressCollection( Collection<Address> addressCollection ) {
+
+        this.addressCollection = addressCollection;
+    }
+
 }

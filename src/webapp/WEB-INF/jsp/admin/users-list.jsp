@@ -1,18 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sprSec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML>
 <HEAD>
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<TITLE>User`s list</TITLE>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<TITLE>User`s list</TITLE>
 
-<LINK href="<c:url value="/rs/css/main.css" />" rel="stylesheet">
+	<LINK href="<c:url value="/rs/css/main.css" />" rel="stylesheet">
+
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
 
 </HEAD>
 <BODY>
-<BR>
-    <TABLE width="780" border="0" align="center" cellpadding="0" cellspacing="0" class="loginTable">
-        <TR>
+<TABLE width="780" border="0" align="center" cellpadding="0" cellspacing="0">
+<TR>
+<TD width="50%" height="30">&nbsp;</TD>
+<TD width="50%" align="right"><jsp:include page="../common/commonWelcome.jsp" /></TD>
+</TR>
+</TABLE>
+<TABLE width="780" border="0" align="center" cellpadding="0" cellspacing="0" class="loginTable">
+    <TR>
             <TD height="40" align="center" class="loginTableHeader">Users</TD>
         </TR>
         <TR>
@@ -23,7 +33,7 @@
                             <TD height="22" align="center">&nbsp;</TD>
                             <TD align="center">&nbsp;</TD>
                             <TD align="center">&nbsp;</TD>
-                            <TD align="right"><A href="#">Add new User</A></TD>
+                            <TD align="right"><sprSec:authorize ifAllGranted="ROLE_OWNER">Add new User</A></sprSec:authorize></TD>
                         </TR>
                         <TR>
                             <TD width="15%" height="25" align="center" bgcolor="#66CCCC"><STRONG>
@@ -35,10 +45,10 @@
                         </TR>
                         <c:forEach var="person" items="${persons}">
                         <TR>
-                            <TD height="25" class="trDashedUL">&nbsp;1</TD>
-                            <TD class="trDashedUL">&nbsp;</TD>
-                            <TD class="trDashedUL">&nbsp;</TD>
-                            <TD class="trDashedUL">&nbsp;</TD>
+                            <TD height="25" align="center" class="trDashedUL">&nbsp;${person.email}</TD>
+                        <TD align="center" class="trDashedUL">&nbsp;<c:if test="${empty person.name}">unknown</c:if><c:if test="${not empty person.name}">${person.name}</c:if></TD>
+                            <TD align="center" class="trDashedUL">&nbsp;${person.role}</TD>
+                            <TD align="center" class="trDashedUL inactiveLink"><sprSec:authorize ifAllGranted="ROLE_EDITOR"><A href="#edit">Edit</A></sprSec:authorize><sprSec:authorize ifAllGranted="ROLE_USER">Edit</sprSec:authorize></TD>
                         </TR>
                         </c:forEach>
                         <TR>
