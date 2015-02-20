@@ -12,11 +12,32 @@
  */
 package abc.def.data;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.TreeMap;
+
 /**
  * @author annik
  *
  */
 public class Utils {
+
+    /**
+     * Use this constant to add redirection in MVC. "redirect:/myPage.htm"
+     */
+    public static final String MVC_REDIRECT = "redirect:";
+
+    /**
+     * Email regex pattern.
+     */
+    public static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     /**
      * Short name for useful using.
@@ -43,5 +64,49 @@ public class Utils {
         result = result ? passwString.matches( ".{6,}" ) : false;
 
         return result;
+    }
+
+    public static String getParam0( String[] param ) {
+
+        return param == null ? "" : ( param[0] == null ? "" : param[0] );
+    }
+
+    /**
+     * 
+     * @param args
+     * @return
+     */
+    public static Map<Integer, String> TimeZoneArray() {
+
+        String supportedPattern = "^(Africa|America|Asia|Atlantic|Australia|" + "Europe|Indian|Pacific)/.*";
+        String[] timeZoneIdList = TimeZone.getAvailableIDs();
+        List<TimeZone> timeZoneList = new ArrayList<TimeZone>();
+        for (String id : timeZoneIdList) {
+            if ( id.matches( supportedPattern ) ) {
+                timeZoneList.add( TimeZone.getTimeZone( id ) );
+            }
+        }
+        Collections.sort( timeZoneList, new Comparator<TimeZone>() {
+
+            public int compare( final TimeZone a, final TimeZone b ) {
+
+                return a.getID().compareTo( b.getID() );
+            }
+        } );
+        Map<Integer, String> tz = new TreeMap<Integer, String>();
+
+        for (TimeZone timeZone : timeZoneList) {
+            String zoneId = timeZone.getID();
+//            String displayName = timeZone.getDisplayName();
+            double offset = (double) timeZone.getRawOffset() / 1000 / 60 / 60;
+            String minute =
+                    ( ( offset - (int) offset ) * 60 ) > 0 ? ( (int) ( ( offset - (int) offset ) * 60 ) + "" )
+                            : "00";
+            String str = zoneId + " " + (int) offset + ":" + minute;
+            tz.put( timeZone.getRawOffset(), str );
+
+            System.out.println( str );
+        }
+        return tz;
     }
 }

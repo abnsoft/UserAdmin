@@ -13,6 +13,9 @@
 package abc.def.data.service;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
 
@@ -41,5 +44,38 @@ public interface PersonService {
      * @param pageNumber
      * @return {@link Page} of {@code pageNumber}
      */
-    public List<Person> pagePersons( int pageNumber );
+    List<Person> pagePersons( int pageNumber );
+
+    /**
+     * Get user.id by his email.
+     * 
+     * @param email
+     * @return {@link Person}
+     */
+    Person getPersonByEmail( String email );
+
+    /**
+     * Get {@link Person} by given {@code userId}.
+     * 
+     * @param userId
+     * @return Person
+     */
+    Person getPersonById( long userId );
+
+    /**
+     * Update person with data from request.<br />
+     * Data should be already validated.
+     * 
+     * @return updated {@link Person}
+     */
+    Person updatePerson( Person person, Map<String, String[]> parameterMap );
+
+    /**
+     * Update {@link HttpSession} info for logined {@link Person}
+     * 
+     * @param session
+     * @param name
+     */
+    void updateSessionForPerson( HttpSession session, String email );
+
 }

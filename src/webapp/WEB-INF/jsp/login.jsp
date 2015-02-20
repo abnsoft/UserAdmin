@@ -23,19 +23,19 @@
                     <TABLE width="95%" border="0" cellspacing="0" cellpadding="0">
                         <TR>
                             <TD width="20%" height="35"><LABEL for="j_username">Email:</LABEL></TD>
-                            <TD width="46%"><INPUT name="j_username" type="text" class="inputFullSize"
-                                id="j_username"></TD>
+                            <TD width="46%"><INPUT name="j_username" type="text" autofocus="autofocus" class="inputFullSize"
+                                id="j_username" tabindex="10" autocomplete="off"></TD>
                             <TD width="34%">&nbsp;</TD>
                         </TR>
                         <TR>
                             <TD height="35"><LABEL for="j_password">Password:</LABEL></TD>
                             <TD><INPUT name="j_password" type="password" class="inputFullSize"
-                                id="j_password"></TD>
+                                id="j_password" tabindex="20" autocomplete="off"></TD>
                             <TD>&nbsp;</TD>
                         </TR>
                         <TR>
                             <TD height="35">&nbsp;</TD>
-                            <TD align="right"><INPUT type="submit" name="submit" id="submit"
+                            <TD align="right"><INPUT name="submit" type="submit" id="submit" tabindex="30"
                                 value="  Войти  "></TD>
                             <TD>&nbsp;</TD>
                         </TR>

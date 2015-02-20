@@ -22,7 +22,7 @@
                     onSubmit="return checkForm();">
                     <INPUT name="register" type="hidden" id="register" form="frm1" value="yes">					
                     
-                    <TABLE width="95%" border="0" cellspacing="5" cellpadding="0">
+                    <TABLE width="95%" border="0" cellspacing="3" cellpadding="0">
                         <TR>
                             <TD width="12%" height="35"><LABEL for="email">Email:</LABEL></TD>
                             <TD width="37%"><INPUT name="email" type="text" class="inputFullSize"
@@ -42,25 +42,49 @@ ${frmReg.errorsMap["valid.frmReg.passwordInvalid"]}</SPAN></TD>
                                 id="password2" autocomplete="off" value="${frmReg.password2}"></TD>
                             <TD valign="middle">&nbsp;<SPAN class="errorMsg">${frmReg.errorsMap["valid.frmReg.passwordConfDiff"]}</SPAN></TD>
                         </TR>
-                        <TR>
-                            <TD height="35">&nbsp;</TD>
-                            <TD align="right"><INPUT type="submit" name="submit" id="submit"
-                                value="  Register  "></TD>
-                            <TD>&nbsp;</TD>
-                        </TR>
-                        <TR>
-                            <TD height="35">&nbsp;</TD>
-                            <TD>&nbsp;</TD>
-                            <TD>&nbsp;</TD>
-                        </TR>
                     </TABLE>
+<BR>
+<TABLE width="95%" border="0" cellpadding="0" cellspacing="3" id="addrTbl">
+<TR class="addressTableHeader">
+<TD height="35">&nbsp;</TD>
+<TD height="35">Address</TD>
+<TD>&nbsp;</TD>
+</TR>
+<TR class="trDashedUL">
+<TD width="12%" height="35" class="trDashedUL"><LABEL for="country">Country:</LABEL></TD>
+<TD width="37%" class="trDashedUL"><INPUT name="country" type="text" class="inputFullSize" id="email2" value="${frmReg.addressList[0].country}"></TD>
+<TD width="51%"><DIV class="errorMsg">${frmUserErr.country}</DIV></TD>
+</TR>
+<TR class="trDashedUL">
+<TD height="35" class="trDashedUL"><LABEL for="city">City:</LABEL></TD>
+<TD class="trDashedUL"><INPUT name="city" type="text" class="inputFullSize" id="fullname" value="${frmReg.addressList[0].city}"></TD>
+<TD><DIV class="errorMsg">${frmUserErr.city}</DIV></TD>
+</TR>
+<TR class="trDashedUL">
+<TD height="35" class="trDashedUL"><LABEL for="street">Street :</LABEL></TD>
+<TD class="trDashedUL"><INPUT name="street" type="text" class="inputFullSize" id="fullname2" value="${frmReg.addressList[0].street}"></TD>
+<TD><DIV class="errorMsg">${frmReg.addressList.street}</DIV></TD>
+</TR>
+<TR class="trDashedUL">
+<TD height="35" class="trDashedUL"><LABEL for="house">House:</LABEL></TD>
+<TD class="trDashedUL"><INPUT name="house" type="text" class="inputFullSize" id="password7" value="${frmReg.addressList[0].house}"></TD>
+<TD><DIV class="errorMsg">${frmUserErr.house}</DIV></TD>
+</TR>
+<T class="trDashedUL"R>
+<TR>
+<TD height="35">&nbsp;</TD>
+<TD align="right"><INPUT type="submit" name="submit3" id="submit3" value="  Add more address  ">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<INPUT type="submit" name="submit" id="submit"
+                                value="  Register  "></TD>
+<TD align="center">&nbsp;</TD>
+</TR>
+</TABLE>
                 </FORM>
         </TD>
             </TD>
         </TR>
     </TABLE>
 <P>
-    <A href="/register.htm">Register new user</A>
-</P>
+    <A href="${pageContext.request.contextPath}/login.htm">Login</A></P>
 </BODY>
 </HTML>

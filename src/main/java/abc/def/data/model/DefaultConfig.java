@@ -19,4 +19,12 @@ package abc.def.data.model;
 public class DefaultConfig {
 
     public static final int PAGE_SIZE = 50;
+
+    public static final String SESSION_USER_NAME = "userName";
+
+    public static final String SESSION_USER_ID = "userId";
+
+    public static final String WEB_PAGE_EXTENSTION = ".htm";
+
+    public static final String SESSION_USER_ROLE = "userRole";
 }

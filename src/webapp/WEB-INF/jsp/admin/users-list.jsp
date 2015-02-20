@@ -9,9 +9,9 @@
 
 	<LINK href="<c:url value="/rs/css/main.css" />" rel="stylesheet">
 
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
+	<META http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<META http-equiv="Pragma" content="no-cache" />
+	<META http-equiv="Expires" content="0" />
 
 </HEAD>
 <BODY>
@@ -48,7 +48,7 @@
                             <TD height="25" align="center" class="trDashedUL">&nbsp;${person.email}</TD>
                         <TD align="center" class="trDashedUL">&nbsp;<c:if test="${empty person.name}">unknown</c:if><c:if test="${not empty person.name}">${person.name}</c:if></TD>
                             <TD align="center" class="trDashedUL">&nbsp;${person.role}</TD>
-                            <TD align="center" class="trDashedUL inactiveLink"><sprSec:authorize ifAllGranted="ROLE_EDITOR"><A href="#edit">Edit</A></sprSec:authorize><sprSec:authorize ifAllGranted="ROLE_USER">Edit</sprSec:authorize></TD>
+                            <TD align="center" class="trDashedUL inactiveLink"><sprSec:authorize ifAllGranted="ROLE_EDITOR"><A href="${pageContext.request.contextPath}/admin/su/user.htm?userId=${person.id}">Edit</A></sprSec:authorize><sprSec:authorize ifAllGranted="ROLE_USER">Edit</sprSec:authorize></TD>
                         </TR>
                         </c:forEach>
                         <TR>

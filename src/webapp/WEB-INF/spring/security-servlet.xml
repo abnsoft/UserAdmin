@@ -26,7 +26,7 @@
     <http auto-config="true">
 
         <intercept-url
-            pattern="/admin/*"
+            pattern="/admin/**"
             access="ROLE_USER,ROLE_EDITOR" />
         <intercept-url
             pattern="/admin/su/**"
@@ -34,7 +34,7 @@
 
         <form-login
             login-page="/login.htm"
-            default-target-url="/admin/users-list.htm"
+            default-target-url="/admin/logined.htm"
             authentication-failure-url="/login.htm" />
 
         <logout

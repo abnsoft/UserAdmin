@@ -20,15 +20,14 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import static abc.def.data.Utils.U.*;
+
 /**
  * @author annik
  *
  */
 @Component( "frmRegisterValidator" )
 public class FormRegisterValidator implements Validator {
-
-    private static final String EMAIL_PATTERN =
-            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     private static final Logger LOG = LoggerFactory.getLogger( FormRegisterValidator.class );
 

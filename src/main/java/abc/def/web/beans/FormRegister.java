@@ -12,7 +12,9 @@
  */
 package abc.def.web.beans;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.metamodel.source.annotations.attribute.FormulaValue;
@@ -23,13 +25,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
 import abc.def.data.Utils.U;
+import abc.def.data.model.Address;
 
 /**
  * @author annik
  *
  */
-//@Scope( WebApplicationContext.SCOPE_REQUEST )
-//@Component( "frmReg" )
 public class FormRegister {
 
     private final Logger LOG = LoggerFactory.getLogger( getClass() );
@@ -39,6 +40,8 @@ public class FormRegister {
     private String password;
 
     private String password2;
+
+    private List<Address> addressList = new ArrayList<Address>();
 
     private Map<String, String> errorsMap = new HashMap<String, String>();
 
@@ -151,5 +154,26 @@ public class FormRegister {
     public boolean isValidPassword() {
 
         return U.validatePassword( this.password );
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the addressList
+     */
+    public List<Address> getAddressList() {
+
+        return addressList;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param addressList
+     *            the addressList to set
+     */
+    public void setAddressList( List<Address> addressList ) {
+
+        this.addressList = addressList;
     }
 }

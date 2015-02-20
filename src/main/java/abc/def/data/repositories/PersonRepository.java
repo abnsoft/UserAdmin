@@ -19,4 +19,20 @@ import abc.def.data.model.Person;
  */
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
+    /**
+     * Find {@link Person} by given {@code email}.
+     * 
+     * @param email
+     * @return {@link Person}
+     */
+    Person findByEmail( String email );
+
+    /**
+     * Find {@link Person} by given {@code userId}.
+     * 
+     * @param userId
+     * @return {@link Person}
+     */
+    Person findById( long userId );
+
 }

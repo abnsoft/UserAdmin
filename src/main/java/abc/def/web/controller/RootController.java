@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +29,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.service.PersonService;
 import abc.def.web.beans.FormRegister;
@@ -50,11 +49,11 @@ public class RootController {
     private PersonService personService;
 
     @Autowired
-    @Qualifier( "frmRegisterValidator" )
-    private Validator validator;
+    private ResourceBundleMessageSource messageSource;
 
     @Autowired
-    private ResourceBundleMessageSource messageSource;
+    @Qualifier( "frmRegisterValidator" )
+    private Validator validator;
 
     @InitBinder
     private void initBinder( WebDataBinder binder ) {
@@ -62,21 +61,27 @@ public class RootController {
         binder.setValidator( validator );
     }
 
-    @RequestMapping( value = "/index.htm" )
-    public String rootUrl() {
-
-        return "login";
-    }
-
-    @RequestMapping( value = "/login.htm" )
-    public ModelAndView loginUrl( HttpServletRequest request, HttpServletResponse response ) {
+    /**
+     * 
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping( value = {"index.htm", "/login.htm"} )
+    public ModelAndView loginUrl( HttpServletRequest request ) {
 
         ModelAndView model = new ModelAndView( "login" );
-        model.addObject( "msg", "login" );
 
         return model;
     }
 
+    /**
+     * 
+     * @param model
+     * @param frmReg
+     * @param result
+     * @return
+     */
     @RequestMapping( value = "/register.htm", method = RequestMethod.GET )
     public ModelAndView registerShow( Model model, @ModelAttribute FormRegister frmReg, BindingResult result ) {
 
@@ -93,9 +98,16 @@ public class RootController {
         return modelAndView;
     }
 
+    /**
+     * 
+     * @param model
+     * @param frmReg
+     * @param result
+     * @return
+     */
     @RequestMapping( value = "/register.htm", method = RequestMethod.POST )
     public ModelAndView registerDo( Model model, @ModelAttribute @Validated FormRegister frmReg,
-            BindingResult result ) {
+            BindingResult result) {
 
         model.addAttribute( frmReg );
 
@@ -108,9 +120,7 @@ public class RootController {
             List<ObjectError> allErrors = result.getAllErrors();
 
             for (ObjectError error : allErrors) {
-                String message = messageSource.getMessage( error, Locale.ENGLISH );
-                frmReg.addErrorsInMap( error.getCode(), message );
-
+                frmReg.addErrorsInMap( error.getCode(), messageSource.getMessage( error, Locale.ENGLISH ) );
             }
             modelAndView.addObject( "frmReg", frmReg );
 

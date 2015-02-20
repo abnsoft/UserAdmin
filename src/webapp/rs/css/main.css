@@ -16,7 +16,18 @@ body {
     color: #FFF;
 }
 
-.inputFullSize { width: 100%; }
+.addressTable { border: 1px solid #666; }
+
+.addressTableHeader {
+    background-color: #CCC;
+    font-size: large;
+    color: #930;
+}
+
+.inputFullSize {
+    width: 98%;
+    padding-left: 2px;
+}
 
 .underlineDashed {
     border-bottom-width: 1px;
@@ -37,3 +48,9 @@ body {
 }
 
 .inactiveLink { color: #999; }
+
+input {
+    font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    font-size: 12px;
+    border: 1px solid #09C;
+}

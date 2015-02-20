@@ -2,4 +2,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sprSec" uri="http://www.springframework.org/security/tags"%>
 
-<c:if test="${sessionScope.userName!=null}">Hello ${sessionScope.userName} </c:if>[<a href="<c:url value="/logout"/>">Logot</a>]
+<c:if test="${sessionScope.userName!=null}">Hello ${sessionScope.userName} </c:if>[<a href="<c:url value="/logout"/>">Logout</a>]

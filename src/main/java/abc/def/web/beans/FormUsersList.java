@@ -25,6 +25,8 @@ final public class FormUsersList {
 
     private final Logger LOG = LoggerFactory.getLogger( getClass() );
 
+    private long id;
+
     private String email;
 
     private String name;
@@ -38,9 +40,31 @@ final public class FormUsersList {
      */
     public FormUsersList( Person person ) {
 
+        this.id = person.getId();
         this.email = person.getEmail();
         this.name = person.getFullName();
         this.role = person.getRole();
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the id
+     */
+    public long getId() {
+
+        return id;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param id
+     *            the id to set
+     */
+    public void setId( long id ) {
+
+        this.id = id;
     }
 
     /**

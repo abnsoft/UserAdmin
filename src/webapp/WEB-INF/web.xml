@@ -6,68 +6,68 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 >
- <display-name>UserAdmin</display-name>
+    <display-name>UserAdmin</display-name>
  <!-- Spring Application config - common for all Spring applications -->
- <context-param>
-  <param-name>contextConfigLocation</param-name>
-  <param-value>/WEB-INF/spring/application-context.xml</param-value>
- </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/spring/application-context.xml</param-value>
+    </context-param>
  <!--  -->
- <filter>
-  <description>This provides a hook into the Spring Security web infrastructure. DelegatingFilterProxy 
+    <filter>
+        <description>This provides a hook into the Spring Security web infrastructure. DelegatingFilterProxy 
         is a Spring Framework class which delegates to a filter implementation which is defined as a Spring 
         bean in your application context. In this case, the bean is named "springSecurityFilterChain", which 
         is an internal infrastructure bean created by the namespace to handle web security</description>
-  <filter-name>springSecurityFilterChain</filter-name>
-  <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
- </filter>
- <filter-mapping>
-  <filter-name>springSecurityFilterChain</filter-name>
-  <url-pattern>/*</url-pattern>
- </filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
  <!-- <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/spring/security-servlet.xml</param-value>
     </context-param> 
  Creates the Spring Container shared by all Servlets and Filters -->
- <listener>
-  <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
- </listener>
- <listener>
-  <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
- </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
  <!-- SPRING Application Servlet config for RESTfull -->
- <servlet>
-  <servlet-name>mvc</servlet-name>
-  <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-  <init-param>
-   <param-name>contextConfigLocation</param-name>
-   <param-value>WEB-INF/spring/mvc-servlet.xml</param-value>
-  </init-param>
-  <load-on-startup>1</load-on-startup>
- </servlet>
- <servlet-mapping>
-  <servlet-name>mvc</servlet-name>
-  <url-pattern>*.htm</url-pattern>
- </servlet-mapping>
- <session-config>
-  <session-timeout>10</session-timeout>
- </session-config>
+    <servlet>
+        <servlet-name>mvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>WEB-INF/spring/mvc-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>mvc</servlet-name>
+        <url-pattern>*.htm</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
  <!--  -->
- <welcome-file-list>
-  <welcome-file>index.htm</welcome-file>
- </welcome-file-list>
+    <welcome-file-list>
+        <welcome-file>index.htm</welcome-file>
+    </welcome-file-list>
  <!--  -->
- <error-page>
-  <error-code>404</error-code>
-  <location>/WEB-INF/errors/404.jsp</location>
- </error-page>
- <error-page>
-  <error-code>500</error-code>
-  <location>/WEB-INF/errors/500.jsp</location>
- </error-page>
- <error-page>
-  <exception-type>java.lang.Exception</exception-type>
-  <location>/WEB-INF/errors/index.jsp</location>
- </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/errors/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/errors/500.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/errors/index.jsp</location>
+    </error-page>
 </web-app>

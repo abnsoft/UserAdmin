@@ -14,10 +14,13 @@ package abc.def.data.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import abc.def.data.Utils.U;
 import abc.def.data.model.DefaultConfig;
 import abc.def.data.model.Person;
 import abc.def.data.model.UserRole;
@@ -40,6 +44,20 @@ import abc.def.data.repositories.PersonRepository;
 public class PersonServiceImpl implements PersonService {
 
     private final Logger LOG = LoggerFactory.getLogger( getClass() );
+
+    public static final String FIELD_EMAIL = "email";
+
+    public static final String FIELD_FULLNAME = "fullName";
+
+    private static final Object FIELD_PASSWORD = "password";
+
+    private static final Object FIELD_ROLE = "role";
+
+    private static final Object FIELD_TIMEZONE = "timezone";
+
+    private static final Object FIELD_CREATED = "created";
+
+    private static final Object FIELD_UPDATED = "updated";
 
     @Autowired
     private PersonRepository personRepository;
@@ -55,9 +73,12 @@ public class PersonServiceImpl implements PersonService {
 
         String fullName = "";
         String role = UserRole.ROLE_USER.toString();
-        String timezone = "0";
-        DateTime created = new DateTime();
-        DateTime udated = new DateTime();
+        int timezone = 0;
+
+        DateTimeZone tz = DateTimeZone.forOffsetMillis( timezone );
+
+        DateTime created = new DateTime( tz );
+        DateTime udated = new DateTime( tz );
 
         Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
         LOG.debug( "Prepared to creating new person {}", newPerson.toString() );
@@ -82,6 +103,75 @@ public class PersonServiceImpl implements PersonService {
             }
         }
         return personList;
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see abc.def.data.service.PersonService#getUserId(java.lang.String)
+     */
+    @Override
+    public Person getPersonByEmail( String email ) {
+
+        return personRepository.findByEmail( email );
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see abc.def.data.service.PersonService#getPersonById(long)
+     */
+    @Override
+    public Person getPersonById( long userId ) {
+
+        return personRepository.findById( userId );
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see abc.def.data.service.PersonService#updatePerson(abc.def.data.model.Person, java.util.Map)
+     */
+    @Override
+    public Person updatePerson( Person person, Map<String, String[]> parameterMap ) {
+
+        String fullName = U.getParam0( parameterMap.get( FIELD_FULLNAME ) );
+
+        String email = U.getParam0( parameterMap.get( FIELD_EMAIL ) );
+
+//        String password = U.getParam0( parameterMap.get( FIELD_PASSWORD ) );
+
+        String role = U.getParam0( parameterMap.get( FIELD_ROLE ) );
+
+        int timezone = Integer.valueOf( U.getParam0( parameterMap.get( FIELD_TIMEZONE ) ) );
+
+//        String created = U.getParam0( parameterMap.get( FIELD_CREATED ) );
+
+//        String updated = U.getParam0( parameterMap.get( FIELD_UPDATED ) );
+
+        person.setEmail( email );
+        person.setFullName( fullName );
+        person.setRole( role );
+        person.setTimezone( timezone );
+
+        DateTimeZone tz = DateTimeZone.forOffsetMillis( timezone );
+
+        person.setUpdated( new DateTime( tz) );
+
+        return personRepository.saveAndFlush( person );
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see abc.def.data.service.PersonService#updateSessionForPerson(javax.servlet.http.HttpSession,
+     * java.lang.String)
+     */
+    @Override
+    public void updateSessionForPerson( HttpSession session, String email ) {
+
+        Person person = personRepository.findByEmail( email );
+
+        session.setAttribute( DefaultConfig.SESSION_USER_NAME, email );
+        session.setAttribute( DefaultConfig.SESSION_USER_ID, person.getId() );
+        session.setAttribute( DefaultConfig.SESSION_USER_ROLE, person.getRole() );
 
     }
 

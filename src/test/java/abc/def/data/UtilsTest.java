@@ -51,4 +51,9 @@ public class UtilsTest {
         assertTrue( "Password `" + pwd + "` chould be NOT validated.", Utils.validatePassword( pwd ) );
     }
 
+    @Test
+    public void TimeZoneArray() {
+
+        Utils.TimeZoneArray();
+    }
 }

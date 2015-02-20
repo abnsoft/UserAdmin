@@ -15,8 +15,10 @@ package abc.def.data.model;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +31,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.type.TrueFalseType;
 import org.hibernate.type.YesNoType;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 /**
  * @author annik
@@ -54,8 +57,8 @@ public class Person {
     @Column( name = "role", length = 16, nullable = false )
     private String role;
 
-    @Column( name = "timezone", length = 128, nullable = false )
-    private String timezone;
+    @Column( name = "timezone", nullable = false )
+    private int timezone;
 
     @Column( name = "created", nullable = false )
 //    @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" )
@@ -73,7 +76,7 @@ public class Person {
     @Type( type = "true_false" )
     private boolean enabled;
 
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable( name = "PERSON_ADDRESS", joinColumns = @JoinColumn( name = "addressid",
             referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "personid",
             referencedColumnName = "id" ) )
@@ -96,7 +99,7 @@ public class Person {
      * @param created
      * @param udated
      */
-    public Person( String fullName, String email, String password, String role, String timezone,
+    public Person( String fullName, String email, String password, String role, int timezone,
             DateTime created, DateTime udated, boolean enabled ) {
 
         this.fullName = fullName;
@@ -119,7 +122,7 @@ public class Person {
      * @param created
      * @param udated
      */
-    public Person( String fullName, String email, String password, String role, String timezone,
+    public Person( String fullName, String email, String password, String role, int timezone,
             DateTime created, DateTime udated ) {
 
         this.fullName = fullName;
@@ -200,7 +203,7 @@ public class Person {
      * 
      * @return the timezone
      */
-    public String getTimezone() {
+    public int getTimezone() {
 
         return timezone;
     }
@@ -212,7 +215,7 @@ public class Person {
      */
     public DateTime getCreated() {
 
-        return created;
+        return new DateTime( created, DateTimeZone.forOffsetMillis( this.timezone ) );
     }
 
     /**
@@ -222,7 +225,7 @@ public class Person {
      */
     public DateTime getUpdated() {
 
-        return updated;
+        return new DateTime( updated, DateTimeZone.forOffsetMillis( this.timezone ) );
     }
 
     /**
@@ -306,7 +309,7 @@ public class Person {
      * @param timezone
      *            the timezone to set
      */
-    public void setTimezone( String timezone ) {
+    public void setTimezone( int timezone ) {
 
         this.timezone = timezone;
     }

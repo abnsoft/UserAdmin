@@ -12,21 +12,25 @@
  */
 package abc.def.web.controller;
 
+import static abc.def.data.Utils.MVC_REDIRECT;
+
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import abc.def.data.model.Person;
-import abc.def.data.repositories.PersonRepository;
 import abc.def.data.service.PersonService;
 import abc.def.web.beans.FormUsersList;
 
@@ -36,13 +40,34 @@ import abc.def.web.beans.FormUsersList;
  */
 @Controller
 @RequestMapping( value = "/admin" )
-@Transactional
 public class AdminController {
+
+    private final Logger LOG = LoggerFactory.getLogger( getClass() );
 
     @Autowired
     private PersonService personService;
 
     public static final String PATH_ADMIN = "/admin";
+
+    /**
+     * Method invoked after successful login.
+     * 
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping( value = "/logined.htm" )
+    public String
+            usersListUrl( Principal principal, HttpServletRequest request, HttpServletResponse response ) {
+
+        LOG.debug( "login to system : {}", principal.getName() );
+
+        personService.updateSessionForPerson( request.getSession(), principal.getName() );
+
+        String nextUrl = MVC_REDIRECT + PATH_ADMIN + "/users-list.htm";
+
+        return nextUrl;
+    }
 
     /**
      * Show users list.
@@ -52,8 +77,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping( value = "/users-list.htm" )
-    @ResponseBody
-    public ModelAndView usersListUrl( HttpServletRequest request, HttpServletResponse response ) {
+    public ModelAndView usersListUrl( Principal principal, HttpServletRequest request ) {
 
         int pageNumber = 1;
 
