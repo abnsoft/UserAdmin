@@ -107,7 +107,7 @@ public class RootController {
      */
     @RequestMapping( value = "/register.htm", method = RequestMethod.POST )
     public ModelAndView registerDo( Model model, @ModelAttribute @Validated FormRegister frmReg,
-            BindingResult result) {
+            BindingResult result, HttpServletRequest request ) {
 
         model.addAttribute( frmReg );
 
@@ -130,7 +130,10 @@ public class RootController {
 
             Person newPerson = null;
             try {
-                newPerson = personService.registerPerson( frmReg.getEmail(), frmReg.getPassword() );
+
+                newPerson =
+                        personService.registerPerson( frmReg.getEmail(), frmReg.getPassword(),
+                                frmReg.getAddressList() );
 
             } catch (Exception e) {
                 LOG.error( "Registration FAILED!", e );

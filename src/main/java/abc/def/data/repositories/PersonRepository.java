@@ -34,5 +34,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * @return {@link Person}
      */
     Person findById( long userId );
+    
+    
 
 }

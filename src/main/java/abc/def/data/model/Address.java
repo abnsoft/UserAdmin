@@ -175,4 +175,16 @@ public class Address {
         this.personCollection = personCollection;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+        return String.format(
+                "Address [id=%s, country=%s, city=%s, street=%s, houseNumber=%s, personCollection=%s]", id,
+                country, city, street, houseNumber, personCollection );
+    }
+
 }

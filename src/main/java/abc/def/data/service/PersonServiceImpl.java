@@ -31,9 +31,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import abc.def.data.Utils.U;
+import abc.def.data.model.Address;
 import abc.def.data.model.DefaultConfig;
 import abc.def.data.model.Person;
 import abc.def.data.model.UserRole;
+import abc.def.data.repositories.AddressRepository;
 import abc.def.data.repositories.PersonRepository;
 
 /**
@@ -62,12 +64,15 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     /*
      * (non-Javadoc)
      * @see abc.def.data.service.PesronService#registerPerson(java.lang.String, java.lang.String)
      */
     @Override
-    public Person registerPerson( String email, String password ) {
+    public Person registerPerson( String email, String password, List<Address> addrList ) {
 
         password = new BCryptPasswordEncoder().encode( password );
 
@@ -81,9 +86,23 @@ public class PersonServiceImpl implements PersonService {
         DateTime udated = new DateTime( tz );
 
         Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
+
+        newPerson = personRepository.save( newPerson );
+
+        List<Person> personLIst = new ArrayList<Person>();
+        personLIst.add( newPerson );
+
+        for (Address address : addrList) {
+            address.setPersonCollection( personLIst );
+        }
+        addressRepository.save( addrList );
+        newPerson.setAddressCollection( addrList );
+
+        newPerson = personRepository.save( newPerson );
+
         LOG.debug( "Prepared to creating new person {}", newPerson.toString() );
 
-        return personRepository.save( newPerson );
+        return newPerson;
     }
 
     /*
@@ -137,15 +156,9 @@ public class PersonServiceImpl implements PersonService {
 
         String email = U.getParam0( parameterMap.get( FIELD_EMAIL ) );
 
-//        String password = U.getParam0( parameterMap.get( FIELD_PASSWORD ) );
-
         String role = U.getParam0( parameterMap.get( FIELD_ROLE ) );
 
         int timezone = Integer.valueOf( U.getParam0( parameterMap.get( FIELD_TIMEZONE ) ) );
-
-//        String created = U.getParam0( parameterMap.get( FIELD_CREATED ) );
-
-//        String updated = U.getParam0( parameterMap.get( FIELD_UPDATED ) );
 
         person.setEmail( email );
         person.setFullName( fullName );
@@ -154,7 +167,7 @@ public class PersonServiceImpl implements PersonService {
 
         DateTimeZone tz = DateTimeZone.forOffsetMillis( timezone );
 
-        person.setUpdated( new DateTime( tz) );
+        person.setUpdated( new DateTime( tz ) );
 
         return personRepository.saveAndFlush( person );
     }
@@ -172,6 +185,18 @@ public class PersonServiceImpl implements PersonService {
         session.setAttribute( DefaultConfig.SESSION_USER_NAME, email );
         session.setAttribute( DefaultConfig.SESSION_USER_ID, person.getId() );
         session.setAttribute( DefaultConfig.SESSION_USER_ROLE, person.getRole() );
+
+    }
+
+    /**
+     * Update person.
+     * 
+     * @param person
+     * @return
+     */
+    public Person updatePerson( Person person ) {
+
+        return personRepository.save( person );
 
     }
 

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 
 import abc.def.data.exception.PersonRegisterException;
+import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 
 /**
@@ -33,10 +34,11 @@ public interface PersonService {
      * 
      * @param email
      * @param password
+     * @param addrList
      * @return registered new {@link Person}.
      * @throws PersonRegisterException
      */
-    Person registerPerson( String email, String password );
+    Person registerPerson( String email, String password, List<Address> addrList );
 
     /**
      * Get {@link Page} data of {@link Person}s
