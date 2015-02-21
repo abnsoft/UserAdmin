@@ -50,7 +50,6 @@ import abc.def.data.repositories.PersonRepository;
  *
  */
 @Service( "personService" )
-@Transactional
 public class PersonServiceImpl implements PersonService {
 
     private final Logger LOG = LoggerFactory.getLogger( getClass() );
@@ -80,6 +79,7 @@ public class PersonServiceImpl implements PersonService {
      * @see abc.def.data.service.PesronService#registerPerson(java.lang.String, java.lang.String)
      */
     @Override
+    @Transactional
     public Person registerPerson( String email, String password, Set<Address> addrList ) {
 
         password = new BCryptPasswordEncoder().encode( password );
@@ -95,14 +95,18 @@ public class PersonServiceImpl implements PersonService {
 
         Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
 
-        addrList = (Set<Address>) checkAddresses( addrList );
+        // check is there Addresses 
+        addrList = (Set<Address>) checkAddresses( addrList, newPerson );
 
-        newPerson.setAddresses( addrList );
+//        newPerson.setAddresses( addrList ); 
+        for (Address tmpAddr : addrList) {
+            newPerson.addAddress( tmpAddr );
+        }
         try {
             newPerson = personRepository.save( newPerson );
 
         } catch (Exception e) {
-            // TODO: handle exception
+            LOG.error( "Register FAILED!", e );
         }
         LOG.debug( "Prepared to creating new person {}", newPerson.toString() );
 
@@ -244,7 +248,7 @@ public class PersonServiceImpl implements PersonService {
     /*
      * Check given addresses for existing.
      */
-    private Collection<Address> checkAddresses( Set<Address> addrList ) {
+    private Collection<Address> checkAddresses( Set<Address> addrList, Person newPerson ) {
 
         Set<Address> newAddresses = new HashSet<Address>();
         Address addr = null;
@@ -252,13 +256,25 @@ public class PersonServiceImpl implements PersonService {
             addr =
                     addressRepository.findByCountryAndCityAndStreetAndHouseNumber( address.getCountry(),
                             address.getCity(), address.getStreet(), address.getHouseNumber() );
+
+//            addr = addr == null ? address : addr;
+            if ( addr != null ) {
+                addr.getPersons().size();
+//                addr.addPerson( newPerson );
+//                addressRepository.save( addr );
+            }
+//            } else {
+
+//            addr.addPerson( newPerson );
+
             addr = addr == null ? address : addr;
             newAddresses.add( addr );
-            addressRepository.flush();
 
+//            addressRepository.flush();
+//            }
             LOG.debug( "checked address {}", addr.toString() );
         }
-        return addrList;
+        return newAddresses;
     }
 
 }

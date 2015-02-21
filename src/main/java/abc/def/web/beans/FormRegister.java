@@ -40,7 +40,7 @@ public class FormRegister {
 
     private String password2;
 
-    private Set<Address> addressList = new LinkedHashSet<Address>();
+    private List<Address> addressList = new ArrayList<Address>();
 
     private Map<String, String> errorsMap = new HashMap<String, String>();
 
@@ -160,7 +160,7 @@ public class FormRegister {
      * 
      * @return the addressList
      */
-    public Set<Address> getAddressList() {
+    public List<Address> getAddressList() {
 
         return addressList;
     }
@@ -171,7 +171,7 @@ public class FormRegister {
      * @param addressList
      *            the addressList to set
      */
-    public void setAddressList( Set<Address> addressList ) {
+    public void setAddressList( List<Address> addressList ) {
 
         this.addressList = addressList;
     }

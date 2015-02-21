@@ -13,7 +13,8 @@
 package abc.def.data.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -29,8 +30,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.type.TrueFalseType;
-import org.hibernate.type.YesNoType;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -56,7 +55,7 @@ public class Person implements Serializable {
      */
     @Column( name = "email", length = 128, nullable = false, unique = true )
     private String email;
-    
+
     /*
      * Fullname of person.
      */
@@ -95,11 +94,11 @@ public class Person implements Serializable {
      * Addresses of person. One person can has many addresses. In that time many persons can live in one
      * address (family).
      */
-    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL )
-    @JoinTable( name = "PERSON_ADDRESS", joinColumns = @JoinColumn( name = "personid",
-            referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "addressid",
-            referencedColumnName = "id" ) )
-    private Set<Address> addresses;
+    @ManyToMany( fetch = FetchType.LAZY, cascade = {CascadeType.ALL} )
+    @JoinTable( name = "PERSON_ADDRESS", joinColumns = {@JoinColumn( name = "personid",
+            referencedColumnName = "id" )}, inverseJoinColumns = {@JoinColumn( name = "addressid",
+            referencedColumnName = "id" )} )
+    private Set<Address> addresses = new HashSet<Address>(0);
 
     /**
      * closed Contructor. Need for JPA.
@@ -163,8 +162,8 @@ public class Person implements Serializable {
 
         return String.format(
                 "Person [id=%s, fullName=%s, email=%s, password=%s, role=%s, timezone=%s, created=%s,"
-                        + " updated=%s, enabled=%s, {address}]", id, fullName, email, password,
-                role, timezone, created, updated, enabled );
+                        + " updated=%s, enabled=%s, {address}]", id, fullName, email, password, role,
+                timezone, created, updated, enabled );
     }
 
     /**
@@ -264,7 +263,32 @@ public class Person implements Serializable {
      */
     public Set<Address> getAddresses() {
 
-        return addresses;
+        //force clients through our add and remove methods
+        return Collections.unmodifiableSet( addresses );
+    }
+
+    public void addAddress( Address address ) {
+
+        //avoid circular calls : assumes equals and hashcode implemented
+        if ( !addresses.contains( address ) ) {
+            addresses.add( address );
+
+            //add method to Product : sets 'other side' of association
+            address.addPerson( this );
+        }
+
+    }
+
+    public void removeAddress( Address address ) {
+
+        //avoid circular calls : assumes equals and hashcode implemented
+        if ( !addresses.contains( address ) ) {
+            addresses.remove( address );
+
+            //add method to Product : sets 'other side' of association
+            address.removePerson( this );
+        }
+
     }
 
     /**
@@ -375,6 +399,34 @@ public class Person implements Serializable {
     public void setAddresses( Set<Address> addressCollection ) {
 
         this.addresses = addressCollection;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) ( id ^ ( id >>> 32 ) );
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals( Object obj ) {
+
+        if ( this == obj ) return true;
+        if ( obj == null ) return false;
+        if ( getClass() != obj.getClass() ) return false;
+        Person other = (Person) obj;
+        if ( id != other.id ) return false;
+        return true;
     }
 
 }

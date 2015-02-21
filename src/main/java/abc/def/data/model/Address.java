@@ -11,10 +11,10 @@
 package abc.def.data.model;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -73,8 +73,8 @@ public class Address implements Serializable {
     /*
      * Users who live at this Address.
      */
-    @ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "addresses" )
-    public Set<Person> persons;
+    @ManyToMany( fetch = FetchType.LAZY, mappedBy = "addresses" )
+    public Set<Person> persons = new HashSet<Person>( 0 );
 
     /**
      * Getter.
@@ -131,9 +131,9 @@ public class Address implements Serializable {
      * 
      * @return the personCollection
      */
-    public Set<Person> getPersonCollection() {
+    public Set<Person> getPersons() {
 
-        return persons;
+        return Collections.unmodifiableSet( persons );
     }
 
     /**
@@ -197,7 +197,7 @@ public class Address implements Serializable {
      * @param personCollection
      *            the personCollection to set
      */
-    public void setPersonCollection( Set<Person> personCollection ) {
+    public void setPersons( Set<Person> personCollection ) {
 
         this.persons = personCollection;
     }
@@ -211,6 +211,62 @@ public class Address implements Serializable {
 
         return String.format( "Address [id=%s, country=%s, city=%s, street=%s, houseNumber=%s, {person}]",
                 id, country, city, street, houseNumber );
+    }
+
+    /**
+     * 
+     */
+    public void addPerson( Person person ) {
+
+        //assumes equals and hashcode implemented: avoid circular calls
+        if ( !persons.contains( person ) ) {
+            persons.add( person );
+
+            //add method to Product : sets 'other side' of association
+            person.addAddress( this );
+        }
+    }
+
+    /**
+     * 
+     */
+    public void removePerson( Person person ) {
+
+        //assumes equals and hashcode implemented: avoid circular calls
+        if ( !persons.contains( person ) ) {
+            persons.remove( person );
+        }
+
+        //add method to Product : sets 'other side' of association
+        person.removeAddress( this );
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) ( id ^ ( id >>> 32 ) );
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals( Object obj ) {
+
+        if ( this == obj ) return true;
+        if ( obj == null ) return false;
+        if ( getClass() != obj.getClass() ) return false;
+        Address other = (Address) obj;
+        if ( id != other.id ) return false;
+        return true;
     }
 
 }

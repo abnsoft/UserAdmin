@@ -8,8 +8,10 @@
  */
 package abc.def.web.controller;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -129,15 +131,14 @@ public class RootController {
         } else {
 
             Person newPerson = null;
-//            ActionResult<Person> actResult = new ActionResult<Person>();
+            
+            // convert list from FORM to Set
+            Set<Address> addrSet = new LinkedHashSet<Address>();
+            for (Address addr : frmReg.getAddressList()) {
+                addrSet.add( addr );
+            }
             try {
-
-//                actResult =
-//                        personService.createPerson( frmReg.getEmail(), frmReg.getPassword(),
-//                                frmReg.getAddressList() );
-                newPerson =
-                        personService.registerPerson( frmReg.getEmail(), frmReg.getPassword(),
-                                frmReg.getAddressList() );
+                newPerson = personService.registerPerson( frmReg.getEmail(), frmReg.getPassword(), addrSet );
 
             } catch (Exception e) {
                 LOG.error( "Registration FAILED!", e );
