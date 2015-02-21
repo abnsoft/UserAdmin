@@ -14,8 +14,11 @@ package abc.def.web.beans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +40,7 @@ public class FormRegister {
 
     private String password2;
 
-    private List<Address> addressList = new ArrayList<Address>();
+    private Set<Address> addressList = new LinkedHashSet<Address>();
 
     private Map<String, String> errorsMap = new HashMap<String, String>();
 
@@ -157,7 +160,7 @@ public class FormRegister {
      * 
      * @return the addressList
      */
-    public List<Address> getAddressList() {
+    public Set<Address> getAddressList() {
 
         return addressList;
     }
@@ -168,7 +171,7 @@ public class FormRegister {
      * @param addressList
      *            the addressList to set
      */
-    public void setAddressList( List<Address> addressList ) {
+    public void setAddressList( Set<Address> addressList ) {
 
         this.addressList = addressList;
     }

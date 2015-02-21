@@ -12,6 +12,7 @@
  */
 package abc.def.data.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
@@ -39,21 +40,39 @@ import org.joda.time.DateTimeZone;
  */
 @Entity
 @Table( name = "PERSON" )
-public class Person {
+public class Person implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    /*
+     * ID of person.
+     */
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     private long id;
 
+    /*
+     * email and used as login of person.
+     */
+    @Column( name = "email", length = 128, nullable = false, unique = true )
+    private String email;
+    
+    /*
+     * Fullname of person.
+     */
     @Column( name = "fullname", length = 128, nullable = true )
     private String fullName;
 
-    @Column( name = "email", length = 128, nullable = false, unique = true )
-    private String email;
-
+    /*
+     * Person`s password. It is stored as encrypted value. Nobody know this value except person. There used
+     * Spring encryption mechanism. Look at the
+     */
     @Column( name = "password", length = 128, nullable = false )
     private String password;
 
+    /*
+     * 
+     */
     @Column( name = "role", length = 16, nullable = false )
     private String role;
 
@@ -61,14 +80,10 @@ public class Person {
     private int timezone;
 
     @Column( name = "created", nullable = false )
-//    @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" )
-    // ^^^^^^~ IT DOES NOT WORK WITH HIBERNATE 4.x
     @Type( type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime" )
     private DateTime created;
 
     @Column( name = "updated", nullable = false )
-//    @Type( type = "org.joda.time.contrib.hibernate.PersistentDateTime" ) 
-    // ^^^^^^~ IT DOES NOT WORK WITH HIBERNATE 4.x
     @Type( type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime" )
     private DateTime updated;
 
@@ -76,14 +91,18 @@ public class Person {
     @Type( type = "true_false" )
     private boolean enabled;
 
-    @ManyToMany( fetch = FetchType.EAGER )
-    @JoinTable( name = "PERSON_ADDRESS", joinColumns = @JoinColumn( name = "addressid",
-            referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "personid",
+    /*
+     * Addresses of person. One person can has many addresses. In that time many persons can live in one
+     * address (family).
+     */
+    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    @JoinTable( name = "PERSON_ADDRESS", joinColumns = @JoinColumn( name = "personid",
+            referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "addressid",
             referencedColumnName = "id" ) )
-    private Collection<Address> addressCollection;
+    private Set<Address> addresses;
 
     /**
-     * closed Contructor.
+     * closed Contructor. Need for JPA.
      */
     protected Person() {
 
@@ -144,8 +163,8 @@ public class Person {
 
         return String.format(
                 "Person [id=%s, fullName=%s, email=%s, password=%s, role=%s, timezone=%s, created=%s,"
-                        + " updated=%s, enabled=%s, addressCollection=%s]", id, fullName, email, password,
-                role, timezone, created, updated, enabled, addressCollection );
+                        + " updated=%s, enabled=%s, {address}]", id, fullName, email, password,
+                role, timezone, created, updated, enabled );
     }
 
     /**
@@ -243,9 +262,9 @@ public class Person {
      * 
      * @return the addressCollection
      */
-    public Collection<Address> getAddressCollection() {
+    public Set<Address> getAddresses() {
 
-        return addressCollection;
+        return addresses;
     }
 
     /**
@@ -353,9 +372,9 @@ public class Person {
      * @param addressCollection
      *            the addressCollection to set
      */
-    public void setAddressCollection( Collection<Address> addressCollection ) {
+    public void setAddresses( Set<Address> addressCollection ) {
 
-        this.addressCollection = addressCollection;
+        this.addresses = addressCollection;
     }
 
 }

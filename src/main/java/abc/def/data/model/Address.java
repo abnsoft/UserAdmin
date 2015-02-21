@@ -10,42 +10,71 @@
  */
 package abc.def.data.model;
 
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
+ * Addresses of person. <br />
+ * One person can has many addresses. In that time many persons can live in one address (family).
+ * 
  * @author annik
  *
  */
 @Entity
-@Table( name = "ADDRESS" )
-public class Address {
+@Table( name = "ADDRESS", uniqueConstraints = {@UniqueConstraint( columnNames = {"country", "city", "street",
+        "housenum"} )}, indexes = {} )
+public class Address implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    /*
+     * Address ID.
+     */
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO )
     private long id;
 
+    /*
+     * Name of country.
+     */
     @Column( length = 128 )
     private String country;
 
+    /*
+     * Name of city.
+     */
     @Column( length = 64 )
     private String city;
 
+    /*
+     * Name of street.
+     */
     @Column( length = 64 )
     private String street;
 
+    /*
+     * Number of house.
+     */
     @Column( name = "housenum" )
     private Integer houseNumber;
 
-    @ManyToMany( mappedBy = "addressCollection" )
-    public Collection<Person> personCollection;
+    /*
+     * Users who live at this Address.
+     */
+    @ManyToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "addresses" )
+    public Set<Person> persons;
 
     /**
      * Getter.
@@ -102,9 +131,9 @@ public class Address {
      * 
      * @return the personCollection
      */
-    public Collection<Person> getPersonCollection() {
+    public Set<Person> getPersonCollection() {
 
-        return personCollection;
+        return persons;
     }
 
     /**
@@ -168,9 +197,9 @@ public class Address {
      * @param personCollection
      *            the personCollection to set
      */
-    public void setPersonCollection( Collection<Person> personCollection ) {
+    public void setPersonCollection( Set<Person> personCollection ) {
 
-        this.personCollection = personCollection;
+        this.persons = personCollection;
     }
 
     /*
@@ -180,9 +209,8 @@ public class Address {
     @Override
     public String toString() {
 
-        return String.format(
-                "Address [id=%s, country=%s, city=%s, street=%s, houseNumber=%s, personCollection=%s]", id,
-                country, city, street, houseNumber, personCollection );
+        return String.format( "Address [id=%s, country=%s, city=%s, street=%s, houseNumber=%s, {person}]",
+                id, country, city, street, houseNumber );
     }
 
 }

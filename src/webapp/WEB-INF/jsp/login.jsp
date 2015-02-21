@@ -11,19 +11,25 @@
 
 </HEAD>
 <BODY>
-    <BR>
-    <TABLE width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="loginTable">
+<TABLE width="500" border="0" align="center" cellpadding="0" cellspacing="0">
+<TR>
+<TD width="50%" height="30">&nbsp;</TD>
+<TD width="50%" align="right">&nbsp;</TD>
+</TR>
+</TABLE>
+<TABLE width="500" border="0" align="center" cellpadding="0" cellspacing="0" class="loginTable">
         <TR>
             <TD height="40" align="center" class="loginTableHeader"><STRONG>Login</STRONG></TD>
         </TR>
         <TR>
-            <TD height="200" align="center">
-                <FORM id="frm1" action="<c:url value='j_spring_security_check' />" method="post"
+            <TD height="200" align="center" valign="top">
+                <BR>
+<FORM id="frm1" action="<c:url value='j_spring_security_check' />" method="post"
                     onSubmit="return checkForm();">
-                    <TABLE width="95%" border="0" cellspacing="0" cellpadding="0">
+    <TABLE width="95%" border="0" cellspacing="0" cellpadding="0">
                         <TR>
                             <TD width="20%" height="35"><LABEL for="j_username">Email:</LABEL></TD>
-                            <TD width="46%"><INPUT name="j_username" type="text" autofocus="autofocus" class="inputFullSize"
+                            <TD width="46%"><INPUT name="j_username" type="text" autofocus class="inputFullSize"
                                 id="j_username" tabindex="10" autocomplete="off"></TD>
                             <TD width="34%">&nbsp;</TD>
                         </TR>
@@ -35,9 +41,10 @@
                         </TR>
                         <TR>
                             <TD height="35">&nbsp;</TD>
-                            <TD align="right"><INPUT name="submit" type="submit" id="submit" tabindex="30"
+                            <TD align="left"><INPUT name="rememberMe" type="checkbox" id="rememberMe" tabindex="30">
+<LABEL for="rememberMe"> Remember me</LABEL></TD>
+                            <TD><INPUT name="submit" type="submit" id="submit" tabindex="9999"
                                 value="  Войти  "></TD>
-                            <TD>&nbsp;</TD>
                         </TR>
                         <TR>
                             <TD height="35">&nbsp;</TD>
@@ -50,7 +57,6 @@
         </TR>
     </TABLE>
     <P>
-        <A href="${pageContext.request.contextPath}/register.htm">Register new user</A>
-    </P>
+        <A href="${pageContext.request.contextPath}/register.htm">Register new user</A></P>
 </BODY>
 </HTML>

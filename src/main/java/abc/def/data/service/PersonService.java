@@ -12,13 +12,16 @@
  */
 package abc.def.data.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
 
+import abc.def.data.ActionResult;
 import abc.def.data.exception.PersonRegisterException;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
@@ -38,7 +41,16 @@ public interface PersonService {
      * @return registered new {@link Person}.
      * @throws PersonRegisterException
      */
-    Person registerPerson( String email, String password, List<Address> addrList );
+    Person registerPerson( String email, String password, Set<Address> addrList );
+
+    /**
+     * 
+     * @param email
+     * @param password
+     * @param addrList
+     * @return
+     */
+    ActionResult<Person> createPerson( String email, String password, Collection<Address> addrList );
 
     /**
      * Get {@link Page} data of {@link Person}s

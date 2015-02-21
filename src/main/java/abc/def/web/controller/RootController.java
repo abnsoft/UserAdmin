@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import abc.def.data.ActionResult;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.service.PersonService;
@@ -68,11 +69,10 @@ public class RootController {
      * @return
      */
     @RequestMapping( value = {"index.htm", "/login.htm"} )
-    public ModelAndView loginUrl( HttpServletRequest request ) {
+    public String loginUrl() {
 
-        ModelAndView model = new ModelAndView( "login" );
-
-        return model;
+        LOG.debug( "requested page : index.htm or login.htm" );
+        return "login";
     }
 
     /**
@@ -93,7 +93,7 @@ public class RootController {
 
         modelAndView.setViewName( "register" );
 
-        modelAndView.addObject( "msg", "user" );
+//        modelAndView.addObject( "msg", "user" );
 
         return modelAndView;
     }
@@ -129,8 +129,12 @@ public class RootController {
         } else {
 
             Person newPerson = null;
+//            ActionResult<Person> actResult = new ActionResult<Person>();
             try {
 
+//                actResult =
+//                        personService.createPerson( frmReg.getEmail(), frmReg.getPassword(),
+//                                frmReg.getAddressList() );
                 newPerson =
                         personService.registerPerson( frmReg.getEmail(), frmReg.getPassword(),
                                 frmReg.getAddressList() );

@@ -15,7 +15,7 @@ $(document).ready(function() {
 	
 	//var duplicateAddress = function(){
 		var count=0;
-		$('#dupl').click( function () {
+		$('#moreAddress').click( function () {
 			count++;
 			var Clonedtable = $("#addTMPL").clone(true).html(function(i, oldHTML){
 				oldHTML = oldHTML.replace(/addressListX/g, "addressList["+count+"]");
@@ -36,13 +36,18 @@ $(document).ready(function() {
 
 
 <BODY>
-    <BR>
-    <TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" class="loginTable">
+<TABLE width="780" border="0" align="center" cellpadding="0" cellspacing="0">
+<TR>
+<TD width="50%" height="30">&nbsp;</TD>
+<TD width="50%" align="right">&nbsp;</TD>
+</TR>
+</TABLE>
+<TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" class="loginTable">
         <TR>
             <TD height="40" align="center" class="loginTableHeader"><STRONG>Register</STRONG></TD>
         </TR>
         <TR>
-            <TD height="300" align="center">
+            <TD height="300" align="center" valign="top">
                 <FORM id="frm1" action="${pageContext.request.contextPath}/register.htm" method="post"
                     onSubmit="return checkForm();">
                     <INPUT name="register" type="hidden" id="register" form="frm1" value="yes">					
@@ -128,13 +133,12 @@ ${frmReg.errorsMap["valid.frmReg.passwordInvalid"]}</SPAN></TD>
 <TABLE width="95%" border="0" cellpadding="0" cellspacing="3" id="addrFtr">
 <TR>
 <TD width="11%" height="35">&nbsp;</TD>
-<TD width="36%" align="right"><INPUT type="button" name="dupl" id="dupl" value="  Add more address  ">
-&nbsp;&nbsp;&nbsp;</TD>
+<TD width="36%" align="right"> <A href="javascript:void(0);" id="moreAddress">I need more address</A>&nbsp;&nbsp;&nbsp;</TD>
 <TD width="53%" align="left"><INPUT type="submit" name="submit" id="submit"
                                 value="  Register  "></TD>
 </TR>
 </TABLE>
-                </FORM>
+</FORM><BR>
         </TD>
             </TD>
         </TR>

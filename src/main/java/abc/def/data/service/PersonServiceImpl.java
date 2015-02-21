@@ -13,8 +13,11 @@
 package abc.def.data.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -29,7 +32,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.AutoPopulatingList;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
+import abc.def.data.ActionResult;
 import abc.def.data.DefaultConfig;
 import abc.def.data.UserRole;
 import abc.def.data.Utils.U;
@@ -43,6 +50,7 @@ import abc.def.data.repositories.PersonRepository;
  *
  */
 @Service( "personService" )
+@Transactional
 public class PersonServiceImpl implements PersonService {
 
     private final Logger LOG = LoggerFactory.getLogger( getClass() );
@@ -72,7 +80,7 @@ public class PersonServiceImpl implements PersonService {
      * @see abc.def.data.service.PesronService#registerPerson(java.lang.String, java.lang.String)
      */
     @Override
-    public Person registerPerson( String email, String password, List<Address> addrList ) {
+    public Person registerPerson( String email, String password, Set<Address> addrList ) {
 
         password = new BCryptPasswordEncoder().encode( password );
 
@@ -87,22 +95,55 @@ public class PersonServiceImpl implements PersonService {
 
         Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
 
-        newPerson = personRepository.save( newPerson );
+        addrList = (Set<Address>) checkAddresses( addrList );
 
-        List<Person> personLIst = new ArrayList<Person>();
-        personLIst.add( newPerson );
+        newPerson.setAddresses( addrList );
+        try {
+            newPerson = personRepository.save( newPerson );
 
-        for (Address address : addrList) {
-            address.setPersonCollection( personLIst );
+        } catch (Exception e) {
+            // TODO: handle exception
         }
-        addressRepository.save( addrList );
-        newPerson.setAddressCollection( addrList );
-
-        newPerson = personRepository.save( newPerson );
-
         LOG.debug( "Prepared to creating new person {}", newPerson.toString() );
 
         return newPerson;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see abc.def.data.service.PersonService#createPerson(java.lang.String, java.lang.String,
+     * java.util.Collection)
+     */
+    @Override
+    public ActionResult<Person> createPerson( String email, String password, Collection<Address> addrList ) {
+
+        ActionResult<Person> actionResult = new ActionResult<Person>();
+
+        password = new BCryptPasswordEncoder().encode( password );
+
+        String fullName = "";
+        String role = UserRole.ROLE_USER.toString();
+        int timezone = 0;
+
+        DateTimeZone tz = DateTimeZone.forOffsetMillis( timezone );
+
+        DateTime created = new DateTime( tz );
+        DateTime udated = new DateTime( tz );
+
+        Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
+
+        newPerson.setAddresses( (Set<Address>) addrList );
+        try {
+            newPerson = personRepository.save( newPerson );
+
+        } catch (Exception e) {
+            actionResult.setError( true );
+            actionResult.addErrorItem( "error", e.getMessage() );
+        }
+        LOG.debug( "Created new person : {}", newPerson.toString() );
+        actionResult.setObject( newPerson );
+
+        return actionResult;
     }
 
     /*
@@ -198,6 +239,26 @@ public class PersonServiceImpl implements PersonService {
 
         return personRepository.save( person );
 
+    }
+
+    /*
+     * Check given addresses for existing.
+     */
+    private Collection<Address> checkAddresses( Set<Address> addrList ) {
+
+        Set<Address> newAddresses = new HashSet<Address>();
+        Address addr = null;
+        for (Address address : addrList) {
+            addr =
+                    addressRepository.findByCountryAndCityAndStreetAndHouseNumber( address.getCountry(),
+                            address.getCity(), address.getStreet(), address.getHouseNumber() );
+            addr = addr == null ? address : addr;
+            newAddresses.add( addr );
+            addressRepository.flush();
+
+            LOG.debug( "checked address {}", addr.toString() );
+        }
+        return addrList;
     }
 
 }

@@ -20,4 +20,7 @@ import abc.def.data.model.Person;
  */
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
+    Address findByCountryAndCityAndStreetAndHouseNumber( String country, String city, String street,
+            int houseNumber );
+
 }
