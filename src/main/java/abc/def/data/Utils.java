@@ -50,7 +50,10 @@ public class Utils {
     }
 
     /**
-     * Check given password as parameters
+     * Check given password for followin conditions : <br />
+     * - at least 1 digit <br />
+     * - at least 1 upper case letter <br />
+     * - password`s length 6+ characters. <br />
      * 
      * @param passwString
      * @return result of validating.
@@ -66,15 +69,21 @@ public class Utils {
         return result;
     }
 
-    public static String getParam0( String[] param ) {
+    /**
+     * Check given String`s array. Assumption is it contains only 1 item.
+     * 
+     * @param parameter
+     * @return
+     */
+    public static String getParam0( String[] parameter ) {
 
-        return param == null ? "" : ( param[0] == null ? "" : param[0] );
+        return parameter == null ? "" : ( parameter[0] == null ? "" : parameter[0] );
     }
 
     /**
+     * Prepare {@link Map} of TimeZones. Key is rawOffset in milliseconds, value is description of time zone.
      * 
-     * @param args
-     * @return
+     * @return Time Zone {@link Map}.
      */
     public static Map<Integer, String> TimeZoneArray() {
 
