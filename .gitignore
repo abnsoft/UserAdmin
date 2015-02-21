@@ -1,2 +1,6 @@
 /build/
 /target/
+/.classpath
+.springBeans
+.project
+/.settings
