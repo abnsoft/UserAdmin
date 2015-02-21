@@ -46,11 +46,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import abc.def.data.DefaultConfig;
+import abc.def.data.UserRole;
 import abc.def.data.Utils;
 import abc.def.data.Utils.U;
-import abc.def.data.model.DefaultConfig;
 import abc.def.data.model.Person;
-import abc.def.data.model.UserRole;
 import abc.def.data.repositories.PersonRepository;
 import abc.def.data.service.PersonService;
 import abc.def.web.beans.FormRegister;

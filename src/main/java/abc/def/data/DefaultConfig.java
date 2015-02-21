@@ -10,7 +10,7 @@
  * Created ..... 19 февр. 2015 г.<br>
  * <br>
  */
-package abc.def.data.model;
+package abc.def.data;
 
 /**
  * @author annik

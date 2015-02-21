@@ -1,7 +1,5 @@
 /**
- * Copyright 2015. ABN Software. All Rights reserved.<br>
- * <br>
- * Homepage .... http://www.ABNsoft.info<br>
+ * Copyright 2015. <br>
  * <br>
  * Project ..... UserAdmin<br>
  * <br>

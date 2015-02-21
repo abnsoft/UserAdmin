@@ -1,4 +1,4 @@
-package abc.def.data.model;
+package abc.def.data;
 
 /**
  * Users ROLES for security.

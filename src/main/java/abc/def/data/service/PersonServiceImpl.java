@@ -30,11 +30,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import abc.def.data.DefaultConfig;
+import abc.def.data.UserRole;
 import abc.def.data.Utils.U;
 import abc.def.data.model.Address;
-import abc.def.data.model.DefaultConfig;
 import abc.def.data.model.Person;
-import abc.def.data.model.UserRole;
 import abc.def.data.repositories.AddressRepository;
 import abc.def.data.repositories.PersonRepository;
 
