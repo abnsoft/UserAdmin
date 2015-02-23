@@ -50,6 +50,7 @@ import abc.def.data.DefaultConfig;
 import abc.def.data.UserRole;
 import abc.def.data.Utils;
 import abc.def.data.Utils.U;
+import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.repositories.PersonRepository;
 import abc.def.data.service.PersonService;
@@ -111,14 +112,12 @@ public class AdminSuController {
 
             mav.addObject( "frmUser", person );
 
-            mav.addObject( "personRoles", UserRole.values() );
+            frmUserCommon( request, mav );
 
-            mav.addObject( "timezonesList", (TreeMap<Integer, String>) Utils.TimeZoneArray() );
-
-            mav.addObject( "personCurId", request.getSession().getAttribute( DefaultConfig.SESSION_USER_ID ) );
-
-            mav.addObject( "personRoleCur",
-                    request.getSession().getAttribute( DefaultConfig.SESSION_USER_ROLE ) );
+            // Addresses
+            List<Address> addressList = (List<Address>) person.getAddresses();
+            mav.addObject( "addrList", addressList );
+            
         }
 
         return mav;
@@ -152,10 +151,13 @@ public class AdminSuController {
             }
             mav.addObject( "frmUserErr", errorsMap );
 
+            frmUserCommon( request, mav );
+
         } else {
 
             Long userid = (Long) request.getSession().getAttribute( DefaultConfig.SESSION_USER_ID );
-            // in case current user is selected 
+
+            // in case current user is selected, check was email is changed  
             if ( userid == person.getId() ) {
 
                 String userNameUpdate = person.getEmail();
@@ -176,4 +178,20 @@ public class AdminSuController {
 
         return mav;
     }
+
+    /**
+     * @param request
+     * @param mav
+     */
+    private void frmUserCommon( HttpServletRequest request, ModelAndView mav ) {
+
+        mav.addObject( "personRoles", UserRole.values() );
+
+        mav.addObject( "timezonesList", (TreeMap<Integer, String>) Utils.TimeZoneArray() );
+
+        mav.addObject( "personCurId", request.getSession().getAttribute( DefaultConfig.SESSION_USER_ID ) );
+
+        mav.addObject( "personRoleCur", request.getSession().getAttribute( DefaultConfig.SESSION_USER_ROLE ) );
+    }
+
 }

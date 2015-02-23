@@ -12,7 +12,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeMap;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -20,6 +22,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import abc.def.data.ActionResult;
+import abc.def.data.Utils;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.service.PersonService;
@@ -70,10 +76,20 @@ public class RootController {
      * @param response
      * @return
      */
-    @RequestMapping( value = {"index.htm", "/login.htm"} )
-    public String loginUrl() {
+    @RequestMapping( value = {"index.htm", "/login.htm"}, method = RequestMethod.GET )
+    public String login( HttpServletRequest request ) {
 
         LOG.debug( "requested page : index.htm or login.htm" );
+        return "login";
+    }
+
+    @RequestMapping( value = {"loginFailed.htm"}, method = RequestMethod.GET )
+    public String loginFailed( Model model, HttpServletRequest request ) {
+
+        LOG.debug( "Login failed!" );
+
+        model.addAttribute( "loginError", "true" );
+        
         return "login";
     }
 
@@ -91,13 +107,13 @@ public class RootController {
 
         LOG.debug( "GET: formReg = {}", frmReg.toString() );
 
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView mav = new ModelAndView();
 
-        modelAndView.setViewName( "register" );
+        mav.setViewName( "register" );
 
-//        modelAndView.addObject( "msg", "user" );
+        mav.addObject( "timezonesList", (TreeMap<Integer, String>) Utils.TimeZoneArray() );
 
-        return modelAndView;
+        return mav;
     }
 
     /**
@@ -115,7 +131,7 @@ public class RootController {
 
         LOG.debug( "POST: formReg = {}", frmReg.toString() );
 
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView mav = new ModelAndView();
 
         if ( result.hasErrors() ) {
             //result is BindingResult
@@ -124,34 +140,44 @@ public class RootController {
             for (ObjectError error : allErrors) {
                 frmReg.addErrorsInMap( error.getCode(), messageSource.getMessage( error, Locale.ENGLISH ) );
             }
-            modelAndView.addObject( "frmReg", frmReg );
+            mav.addObject( "frmReg", frmReg );
 
-            modelAndView.setViewName( "register" );
+            mav.addObject( "timezonesList", (TreeMap<Integer, String>) Utils.TimeZoneArray() );
+
+            mav.setViewName( "register" );
 
         } else {
 
-            Person newPerson = null;
-            
             // convert list from FORM to Set
             Set<Address> addrSet = new LinkedHashSet<Address>();
             for (Address addr : frmReg.getAddressList()) {
                 addrSet.add( addr );
             }
             try {
-                newPerson = personService.registerPerson( frmReg.getEmail(), frmReg.getPassword(), addrSet );
+                Person newPerson = personService.registerPerson( frmReg, addrSet );
+
+                LOG.debug( "Registered new Person : {}, redirect to login.", newPerson );
 
             } catch (Exception e) {
                 LOG.error( "Registration FAILED!", e );
                 // TODO : show to user some information about problem 
             }
 
-            LOG.debug( "Registered new Person : {}, redirect to login.", newPerson );
-
             model.addAttribute( "form", frmReg );
-            modelAndView.setViewName( "redirect:admin/users-list.htm" );
+
+            // Authenticate registered person 
+            try {
+                request.login( frmReg.getEmail(), frmReg.getPassword() );
+                mav.setViewName( "redirect:admin/users-list.htm" );
+
+            } catch (ServletException e) {
+                LOG.debug( "Login FAILED!" );
+                mav.setViewName( "redirect:login-failed.htm" );
+            }
+
         }
 
-        return modelAndView;
+        return mav;
     }
 
 }

@@ -13,7 +13,6 @@
 <SCRIPT type="text/javascript" >
 $(document).ready(function() {
 	
-	//var duplicateAddress = function(){
 		var count=0;
 		$('#moreAddress').click( function () {
 			count++;
@@ -27,8 +26,10 @@ $(document).ready(function() {
 				return txt;
 			})
 			$("#addTBL"+count).show();
-		})
-	//}
+		});
+		var checkForm = function(){
+			var f = $("#frm1");
+		}
 });
 </SCRIPT>
 </HEAD>
@@ -72,6 +73,21 @@ ${frmReg.errorsMap["valid.frmReg.passwordInvalid"]}</SPAN></TD>
                                 id="password2" autocomplete="off" value="${frmReg.password2}"></TD>
                             <TD valign="middle" class="trDashedUL">&nbsp;<SPAN class="errorMsg">${frmReg.errorsMap["valid.frmReg.passwordConfDiff"]}</SPAN></TD>
                         </TR>
+<TR>
+<TD height="35"><LABEL for="fullName">Full name:</LABEL></TD>
+<TD><INPUT name="fullName" type="text" class="inputFullSize" id="fullName" value="${frmReg.fullName}"></TD>
+<TD valign="middle" class="trDashedUL">&nbsp;<SPAN class="errorMsg">${frmReg.errorsMap["valid.frmReg.fullName"]}</SPAN></TD>
+</TR>
+<TR>
+<TD height="35" class="trDashedUL"><LABEL for="timezone">Timezone:</LABEL></TD>
+<TD class="trDashedUL"><SELECT name="timezone" class="inputFullSize" id="timezone">
+<OPTION value="null" >Your TimeZone</OPTION>
+<c:forEach items="${timezonesList}" var="tz">
+<OPTION value="${tz.key}" <c:if test="${frmReg.timezone eq tz.key}">SELECTED</c:if> >${tz.value}</OPTION>
+</c:forEach>
+</SELECT></TD>
+<TD class="trDashedUL">&nbsp;<SPAN class="errorMsg">${frmReg.errorsMap["valid.frmReg.timezone"]}</SPAN></TD>
+</TR>
                     </TABLE>
 <BR>
 <TABLE width="95%" border="0" cellpadding="0" cellspacing="3" id="addTMPL" style="display:none;">

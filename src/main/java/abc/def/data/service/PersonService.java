@@ -25,6 +25,7 @@ import abc.def.data.ActionResult;
 import abc.def.data.exception.PersonRegisterException;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
+import abc.def.web.beans.FormRegister;
 
 /**
  * @author annik
@@ -35,22 +36,10 @@ public interface PersonService {
     /**
      * Register new {@link Person}.
      * 
-     * @param email
-     * @param password
-     * @param addrList
+     * @param frmReg
      * @return registered new {@link Person}.
-     * @throws PersonRegisterException
      */
-    Person registerPerson( String email, String password, Set<Address> addrList );
-
-    /**
-     * 
-     * @param email
-     * @param password
-     * @param addrList
-     * @return
-     */
-    ActionResult<Person> createPerson( String email, String password, Collection<Address> addrList );
+    Person registerPerson( FormRegister frmReg, Set<Address> addrList );
 
     /**
      * Get {@link Page} data of {@link Person}s

@@ -24,7 +24,11 @@
  -->
 
     <http auto-config="true">
-
+        <session-management>
+            <concurrency-control
+                max-sessions="1"
+                expired-url="/login.htm" />
+        </session-management>
         <intercept-url
             pattern="/admin/**"
             access="ROLE_USER,ROLE_EDITOR" />
@@ -35,7 +39,7 @@
         <form-login
             login-page="/login.htm"
             default-target-url="/admin/logined.htm"
-            authentication-failure-url="/login.htm" />
+            authentication-failure-url="/loginFailed.htm"  />
 
         <logout
             logout-url="/logout"

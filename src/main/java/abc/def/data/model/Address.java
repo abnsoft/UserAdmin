@@ -11,10 +11,12 @@
 package abc.def.data.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -73,8 +75,8 @@ public class Address implements Serializable {
     /*
      * Users who live at this Address.
      */
-    @ManyToMany( fetch = FetchType.LAZY, mappedBy = "addresses" )
-    public Set<Person> persons = new HashSet<Person>( 0 );
+    @ManyToMany( fetch = FetchType.LAZY, mappedBy = "addresses", cascade = {CascadeType.ALL} )
+    public Collection<Person> persons = new HashSet<Person>( 0 );
 
     /**
      * Getter.
@@ -131,9 +133,9 @@ public class Address implements Serializable {
      * 
      * @return the personCollection
      */
-    public Set<Person> getPersons() {
+    public Collection<Person> getPersons() {
 
-        return Collections.unmodifiableSet( persons );
+        return persons;
     }
 
     /**
@@ -250,7 +252,10 @@ public class Address implements Serializable {
 
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) ( id ^ ( id >>> 32 ) );
+        result = prime * result + ( ( city == null ) ? 0 : city.hashCode() );
+        result = prime * result + ( ( country == null ) ? 0 : country.hashCode() );
+        result = prime * result + ( ( houseNumber == null ) ? 0 : houseNumber.hashCode() );
+        result = prime * result + ( ( street == null ) ? 0 : street.hashCode() );
         return result;
     }
 
@@ -265,7 +270,18 @@ public class Address implements Serializable {
         if ( obj == null ) return false;
         if ( getClass() != obj.getClass() ) return false;
         Address other = (Address) obj;
-        if ( id != other.id ) return false;
+        if ( city == null ) {
+            if ( other.city != null ) return false;
+        } else if ( !city.equals( other.city ) ) return false;
+        if ( country == null ) {
+            if ( other.country != null ) return false;
+        } else if ( !country.equals( other.country ) ) return false;
+        if ( houseNumber == null ) {
+            if ( other.houseNumber != null ) return false;
+        } else if ( !houseNumber.equals( other.houseNumber ) ) return false;
+        if ( street == null ) {
+            if ( other.street != null ) return false;
+        } else if ( !street.equals( other.street ) ) return false;
         return true;
     }
 

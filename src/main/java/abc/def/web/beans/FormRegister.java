@@ -40,6 +40,10 @@ public class FormRegister {
 
     private String password2;
 
+    private String fullName;
+    
+    private Integer timezone;
+
     private List<Address> addressList = new ArrayList<Address>();
 
     private Map<String, String> errorsMap = new HashMap<String, String>();
@@ -174,5 +178,41 @@ public class FormRegister {
     public void setAddressList( List<Address> addressList ) {
 
         this.addressList = addressList;
+    }
+
+    
+    /** Getter.
+     * @return the fullName
+     */
+    public String getFullName() {
+    
+        return fullName;
+    }
+
+    
+    /** Setter.
+     * @param fullName the fullName to set
+     */
+    public void setFullName( String fullName ) {
+    
+        this.fullName = fullName;
+    }
+
+    
+    /** Getter.
+     * @return the timezone
+     */
+    public Integer getTimezone() {
+    
+        return timezone;
+    }
+
+    
+    /** Setter.
+     * @param timezone the timezone to set
+     */
+    public void setTimezone( Integer timezone ) {
+    
+        this.timezone = timezone;
     }
 }

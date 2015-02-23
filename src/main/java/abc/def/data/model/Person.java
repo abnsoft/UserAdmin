@@ -13,6 +13,7 @@
 package abc.def.data.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -98,7 +99,7 @@ public class Person implements Serializable {
     @JoinTable( name = "PERSON_ADDRESS", joinColumns = {@JoinColumn( name = "personid",
             referencedColumnName = "id" )}, inverseJoinColumns = {@JoinColumn( name = "addressid",
             referencedColumnName = "id" )} )
-    private Set<Address> addresses = new HashSet<Address>(0);
+    private Collection<Address> addresses = new HashSet<Address>( 0 );
 
     /**
      * closed Contructor. Need for JPA.
@@ -261,10 +262,10 @@ public class Person implements Serializable {
      * 
      * @return the addressCollection
      */
-    public Set<Address> getAddresses() {
+    public Collection<Address> getAddresses() {
 
         //force clients through our add and remove methods
-        return Collections.unmodifiableSet( addresses );
+        return addresses;
     }
 
     public void addAddress( Address address ) {
@@ -410,7 +411,7 @@ public class Person implements Serializable {
 
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) ( id ^ ( id >>> 32 ) );
+        result = prime * result + ( ( email == null ) ? 0 : email.hashCode() );
         return result;
     }
 
@@ -425,7 +426,9 @@ public class Person implements Serializable {
         if ( obj == null ) return false;
         if ( getClass() != obj.getClass() ) return false;
         Person other = (Person) obj;
-        if ( id != other.id ) return false;
+        if ( email == null ) {
+            if ( other.email != null ) return false;
+        } else if ( !email.equals( other.email ) ) return false;
         return true;
     }
 

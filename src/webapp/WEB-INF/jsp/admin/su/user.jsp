@@ -6,8 +6,8 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <TITLE>Insert title here</TITLE>
 
-	<LINK href="<c:url value="/rs/css/main.css" />" rel="stylesheet" />
-
+	<LINK href="<c:url value='/rs/css/main.css' />" rel="stylesheet" type="text/css" />
+	
 </HEAD>
 <BODY>
 <TABLE width="780" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -69,49 +69,64 @@
 <TD>&nbsp;</TD>
 </TR>
 </TABLE>
+</FORM>
 <BR>
+
+<c:forEach items="${addrList}" var="addr" varStatus="ind">
+${ind.index} = ${addr}
+
+<FORM id="fa${ind.index}" action="${pageContext.request.contextPath}/admin/su/address.htm" method="post" onSubmit="return checkAddress();">
 <TABLE width="95%" border="0" cellspacing="0" cellpadding="0">
 <TR class="addressTableHeader">
-<TD height="35">&nbsp;</TD>
+<TD height="35"><SPAN class="trDashedUL">
+<INPUT name="addressId" type="hidden" id="addressId" value="${addr.id}">
+</SPAN></TD>
 <TD height="35">Address</TD>
 <TD>&nbsp;</TD>
 </TR>
 <TR class="trDashedUL">
-<TD width="14%" height="35" class="trDashedUL"><LABEL for="email">Country:</LABEL></TD>
-<TD width="43%" class="trDashedUL"><INPUT name="country" type="text" class="inputFullSize" id="email" value="{frmUser.country}"></TD>
-<TD><DIV class="errorMsg">${frmUserErr.country}</DIV></TD>
+<TD width="14%" height="35" class="trDashedUL"><LABEL for="country">Country:</LABEL></TD>
+<TD width="43%" class="trDashedUL"><INPUT name="country" type="text" class="inputFullSize" id="country" form="fa" value="${addr.country}"></TD>
+<TD><DIV class="errorMsg">${faErr.country}</DIV></TD>
 </TR>
 <TR class="trDashedUL">
-<TD height="35" class="trDashedUL"><LABEL for="fullName">City:</LABEL></TD>
-<TD class="trDashedUL"><INPUT name="city" type="text" class="inputFullSize" id="fullname" value="{frmUser.city}"></TD>
-<TD><DIV class="errorMsg">${frmUserErr.city}</DIV></TD>
+<TD height="35" class="trDashedUL"><LABEL for="city">City:</LABEL></TD>
+<TD class="trDashedUL"><INPUT name="city" type="text" class="inputFullSize" id="city" form="fa" value="${addr.city}"></TD>
+<TD><DIV class="errorMsg">${faErr.city}</DIV></TD>
 </TR>
 <TR class="trDashedUL">
-<TD height="35" class="trDashedUL"><LABEL for="timezone">Street :</LABEL></TD>
-<TD class="trDashedUL"><SELECT name="select2" id="select2">
-</SELECT></TD>
-<TD><DIV class="errorMsg">${frmUserErr.street}</DIV></TD>
+<TD height="35" class="trDashedUL"><LABEL for="street">Street :</LABEL></TD>
+<TD class="trDashedUL"><INPUT name="street" type="text" class="inputFullSize" id="street" form="fa" value="${addr.city}"></TD>
+<TD><DIV class="errorMsg">${faErr.street}</DIV></TD>
 </TR>
 <TR class="trDashedUL">
-<TD height="35" class="trDashedUL"><LABEL for="password7">House:</LABEL></TD>
-<TD class="trDashedUL"><INPUT name="house" type="text" class="inputFullSize" id="password7" value="{frmUser.house}"></TD>
-<TD><DIV class="errorMsg">${frmUserErr.house}</DIV></TD>
+<TD height="35" class="trDashedUL"><LABEL for="house">House:</LABEL></TD>
+<TD class="trDashedUL"><INPUT name="house" type="text" class="inputFullSize" id="house" form="fa" value="${addr.houseNumber}"></TD>
+<TD><DIV class="errorMsg">${faErr.house}</DIV></TD>
 </TR>
 <T class="trDashedUL"R>
-<TD height="35">&nbsp;</TD>
-<TD align="right"><INPUT type="submit" name="submit2" id="submit2" value="  Update  "></TD>
+<TD height="35" align="center"><A href="javascript:void(0);">Add address</A></TD>
+<TD align="right"><INPUT name="addrSubmit" type="submit" id="addrSubmit" form="fa" value="   Edit   "></TD>
 <TD>&nbsp;</TD>
 </TR>
+</TABLE>
+<TABLE width="95%" border="0" cellspacing="0" cellpadding="0">
 <TR>
-<TD height="35">&nbsp;</TD>
-<TD align="right">&nbsp;</TD>
-<TD><INPUT type="submit" name="submit3" id="submit3" value="  Add more address  "></TD>
+<TD width="14%" height="35">&nbsp;</TD>
+<TD width="43%" align="right">&nbsp;</TD>
+<TD>&nbsp;</TD>
 </TR>
 </TABLE>
 </FORM>
+</c:forEach>
+
+
 <BR>
 </TD>
 </TR>
 </TABLE>
+<SCRIPT type="text/javascript">
+var spryconfirm1 = new Spry.Widget.ValidationConfirm("spryconfirm1", "fullName");
+</SCRIPT>
 </BODY>
 </HTML>

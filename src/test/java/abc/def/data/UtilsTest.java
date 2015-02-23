@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,6 +55,9 @@ public class UtilsTest {
     @Test
     public void TimeZoneArray() {
 
-        Utils.TimeZoneArray();
+//        Utils.TimeZoneArray();
+        String str = String.format( "[GMT %1$+03d:%2$02d] %3$s", 1, 3, "Pasific" );
+        assertEquals( "String format error 1", "[GMT +01:03] Pasific", str );
     }
+
 }

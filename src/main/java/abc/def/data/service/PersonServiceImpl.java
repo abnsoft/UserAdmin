@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
@@ -44,12 +45,14 @@ import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.repositories.AddressRepository;
 import abc.def.data.repositories.PersonRepository;
+import abc.def.web.beans.FormRegister;
 
 /**
  * @author annik
  *
  */
 @Service( "personService" )
+@Transactional
 public class PersonServiceImpl implements PersonService {
 
     private final Logger LOG = LoggerFactory.getLogger( getClass() );
@@ -79,26 +82,25 @@ public class PersonServiceImpl implements PersonService {
      * @see abc.def.data.service.PesronService#registerPerson(java.lang.String, java.lang.String)
      */
     @Override
-    @Transactional
-    public Person registerPerson( String email, String password, Set<Address> addrList ) {
+    public Person registerPerson( FormRegister frmReg, Set<Address> addrList ) {
 
-        password = new BCryptPasswordEncoder().encode( password );
+        String password = new BCryptPasswordEncoder().encode( frmReg.getPassword() );
 
-        String fullName = "";
         String role = UserRole.ROLE_USER.toString();
-        int timezone = 0;
+        int timezone = frmReg.getTimezone();
 
         DateTimeZone tz = DateTimeZone.forOffsetMillis( timezone );
 
         DateTime created = new DateTime( tz );
         DateTime udated = new DateTime( tz );
 
-        Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
+        Person newPerson =
+                new Person( frmReg.getFullName(), frmReg.getEmail(), password, role, timezone, created,
+                        udated, true );
 
         // check is there Addresses 
         addrList = (Set<Address>) checkAddresses( addrList, newPerson );
 
-//        newPerson.setAddresses( addrList ); 
         for (Address tmpAddr : addrList) {
             newPerson.addAddress( tmpAddr );
         }
@@ -111,43 +113,6 @@ public class PersonServiceImpl implements PersonService {
         LOG.debug( "Prepared to creating new person {}", newPerson.toString() );
 
         return newPerson;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see abc.def.data.service.PersonService#createPerson(java.lang.String, java.lang.String,
-     * java.util.Collection)
-     */
-    @Override
-    public ActionResult<Person> createPerson( String email, String password, Collection<Address> addrList ) {
-
-        ActionResult<Person> actionResult = new ActionResult<Person>();
-
-        password = new BCryptPasswordEncoder().encode( password );
-
-        String fullName = "";
-        String role = UserRole.ROLE_USER.toString();
-        int timezone = 0;
-
-        DateTimeZone tz = DateTimeZone.forOffsetMillis( timezone );
-
-        DateTime created = new DateTime( tz );
-        DateTime udated = new DateTime( tz );
-
-        Person newPerson = new Person( fullName, email, password, role, timezone, created, udated, true );
-
-        newPerson.setAddresses( (Set<Address>) addrList );
-        try {
-            newPerson = personRepository.save( newPerson );
-
-        } catch (Exception e) {
-            actionResult.setError( true );
-            actionResult.addErrorItem( "error", e.getMessage() );
-        }
-        LOG.debug( "Created new person : {}", newPerson.toString() );
-        actionResult.setObject( newPerson );
-
-        return actionResult;
     }
 
     /*
@@ -202,6 +167,8 @@ public class PersonServiceImpl implements PersonService {
         String email = U.getParam0( parameterMap.get( FIELD_EMAIL ) );
 
         String role = U.getParam0( parameterMap.get( FIELD_ROLE ) );
+        // in case user update own record - role is disabled, get it from his info
+        role = ( StringUtils.isBlank( role ) ? person.getRole() : role );
 
         int timezone = Integer.valueOf( U.getParam0( parameterMap.get( FIELD_TIMEZONE ) ) );
 
@@ -257,12 +224,12 @@ public class PersonServiceImpl implements PersonService {
                     addressRepository.findByCountryAndCityAndStreetAndHouseNumber( address.getCountry(),
                             address.getCity(), address.getStreet(), address.getHouseNumber() );
 
-//            addr = addr == null ? address : addr;
             if ( addr != null ) {
-                addr.getPersons().size();
+//                addr.getPersons().size();
 //                addr.addPerson( newPerson );
 //                addressRepository.save( addr );
             }
+
 //            } else {
 
 //            addr.addPerson( newPerson );

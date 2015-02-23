@@ -10,7 +10,7 @@
 <LINK href='<c:url value="/rs/css/main.css" />' rel='stylesheet' />
 
 </HEAD>
-<BODY>
+<BODY onload='document.frm1.j_username.focus();'>
 <TABLE width="500" border="0" align="center" cellpadding="0" cellspacing="0">
 <TR>
 <TD width="50%" height="30">&nbsp;</TD>
@@ -23,7 +23,17 @@
         </TR>
         <TR>
             <TD height="200" align="center" valign="top">
-                <BR>
+<c:if test="${not empty loginError}">  
+  <div class="errorMsg">  
+   <BR>
+Your login attempt was not successful.  
+ <BR>
+Caused :  
+   ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}  
+  <BR>
+</div>  
+ </c:if>  
+ <BR>
 <FORM id="frm1" action="<c:url value='j_spring_security_check' />" method="post"
                     onSubmit="return checkForm();">
     <TABLE width="95%" border="0" cellspacing="0" cellpadding="0">

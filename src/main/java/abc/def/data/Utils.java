@@ -15,12 +15,18 @@ package abc.def.data;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @author annik
@@ -87,9 +93,11 @@ public class Utils {
      */
     public static Map<Integer, String> TimeZoneArray() {
 
-        String supportedPattern = "^(Africa|America|Asia|Atlantic|Australia|" + "Europe|Indian|Pacific)/.*";
+//        String supportedPattern = "^(Africa|America|Asia|Atlantic|Australia|" + "Europe|Indian|Pacific)/.*";
+        String supportedPattern = "^(America|Asia|Atlantic|Australia|" + "Europe|Pacific)/.*";
         String[] timeZoneIdList = TimeZone.getAvailableIDs();
         List<TimeZone> timeZoneList = new ArrayList<TimeZone>();
+
         for (String id : timeZoneIdList) {
             if ( id.matches( supportedPattern ) ) {
                 timeZoneList.add( TimeZone.getTimeZone( id ) );
@@ -107,14 +115,14 @@ public class Utils {
         for (TimeZone timeZone : timeZoneList) {
             String zoneId = timeZone.getID();
 //            String displayName = timeZone.getDisplayName();
-            double offset = (double) timeZone.getRawOffset() / 1000 / 60 / 60;
+//            double offset = (double) timeZone.getRawOffset() / 1000 / 60 / 60;
+            int offset = timeZone.getRawOffset() / 1000 / 60 / 60;
             String minute =
                     ( ( offset - (int) offset ) * 60 ) > 0 ? ( (int) ( ( offset - (int) offset ) * 60 ) + "" )
                             : "00";
-            String str = zoneId + " " + (int) offset + ":" + minute;
-            tz.put( timeZone.getRawOffset(), str );
+            String str = String.format( "[GMT%1$+03d:%2$s] %3$s", offset, minute, zoneId );
 
-            System.out.println( str );
+            tz.put( timeZone.getRawOffset(), str );
         }
         return tz;
     }

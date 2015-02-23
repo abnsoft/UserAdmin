@@ -72,6 +72,15 @@ public class FormRegisterValidator implements Validator {
                 errors.rejectValue( "password2", "valid.frmReg.passwordConfDiff" );
             }
 
+            ValidationUtils.rejectIfEmptyOrWhitespace( errors, "fullName", "valid.frmReg.fullName" );
+
+            if ( form.getTimezone() == null ) {
+                errors.rejectValue( "timezone", "valid.frmReg.timezone" );
+            }
+            
+            // check Addresses not null 
+            
+            
         }
     }
 
