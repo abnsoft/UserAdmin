@@ -7,6 +7,7 @@ body {
     margin-bottom: 0px;
     text-align: center;
     font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    color: #666;
 }
 
 .loginTable { border: 1px solid #900; }
@@ -55,3 +56,22 @@ input[type=text], input[type=password],select {
     font-size: 12px;
     border: 1px solid #09C;
 }
+.input{
+    font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    font-size: 12px;
+    border: 1px solid #09C;
+}
+.inputOff{
+    font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    font-size: 12px;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    border-left-style: none;
+}
+
+.likeLink { cursor: pointer; }
