@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -198,6 +199,9 @@ public class PersonServiceImpl implements PersonService {
         session.setAttribute( DefaultConfig.SESSION_USER_ID, person.getId() );
         session.setAttribute( DefaultConfig.SESSION_USER_ROLE, person.getRole() );
 
+        // default value yet 
+        session.setAttribute( DefaultConfig.SESSION_CUR_LOCALE, Locale.ENGLISH );
+
     }
 
     /**
@@ -213,6 +217,16 @@ public class PersonServiceImpl implements PersonService {
     }
 
     /*
+     * (non-Javadoc)
+     * @see abc.def.data.service.PersonService#save(abc.def.data.model.Person)
+     */
+    @Override
+    public Person save( Person selectedPerson ) {
+
+        return personRepository.save( selectedPerson );
+    }
+
+    /*
      * Check given addresses for existing.
      */
     private Collection<Address> checkAddresses( Set<Address> addrList, Person newPerson ) {
@@ -224,21 +238,9 @@ public class PersonServiceImpl implements PersonService {
                     addressRepository.findByCountryAndCityAndStreetAndHouseNumber( address.getCountry(),
                             address.getCity(), address.getStreet(), address.getHouseNumber() );
 
-            if ( addr != null ) {
-//                addr.getPersons().size();
-//                addr.addPerson( newPerson );
-//                addressRepository.save( addr );
-            }
-
-//            } else {
-
-//            addr.addPerson( newPerson );
-
             addr = addr == null ? address : addr;
             newAddresses.add( addr );
 
-//            addressRepository.flush();
-//            }
             LOG.debug( "checked address {}", addr.toString() );
         }
         return newAddresses;

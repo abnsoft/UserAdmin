@@ -51,8 +51,6 @@
             value=".jsp" />
     </bean>
 
-    <context:annotation-config />
-
     <bean
         id="messageSource"
         class="org.springframework.context.support.ResourceBundleMessageSource"

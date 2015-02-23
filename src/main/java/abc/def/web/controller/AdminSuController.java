@@ -103,6 +103,7 @@ public class AdminSuController {
 
         ModelAndView mav = new ModelAndView();
         if ( userId == null || userId == 0 ) {
+            LOG.warn( "Invalid request!" );
             mav.setViewName( U.MVC_REDIRECT + AdminController.PATH_ADMIN + "/users-list"
                     + DefaultConfig.WEB_PAGE_EXTENSTION );
 

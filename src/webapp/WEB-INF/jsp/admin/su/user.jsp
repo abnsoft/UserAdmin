@@ -54,17 +54,44 @@ try{
 		$(sb).fadeIn("slow");
 		//
 		$(sb).click(function(){
-			$.post(prefix+'/admin/su/saveAddress.htm', $(sb).serialize(), function(response) {
-				alert( response );
-			  $('#trgt').text(response);
+			$.ajax({
+				type: "POST",
+				url: prefix + '/admin/rest/saveAddress',
+				data: $("#fa"+id).serialize(),
+				success: function(response){
+					
+					alert( response.status ) ;
+					alert( response.message ) ;
+					alert( response.result.country+" | "+response.result.city ) ;
+					// we have the response
+					if(response.status == "SUCCESS"){
+						 alert( response ) ;
+						 
+					 }else{
+						 console.log("AJAX ERROR");
+						 errorInfo = "";
+						 for(i =0 ; i < response.result.length ; i++){
+							 errorInfo += "<br>" + (i + 1) +". " + response.result[i].code;
+						 }
+						 $('#error').html("Please correct following errors: " + errorInfo);
+						 $('#info').hide('slow');
+						 $('#error').show('slow');
+						alert(" ERROR "+response ) ;
+					 }
+				 },
+				 error: function(e){
+					 alert('Error: ' + e);
+				 }
 			});
+		
+
 		})
 	}
 	// -------------------------------------------------------------
 	var RestPost = function() {
 		$.ajax({
 		type: 'POST',
-		url:  prefix + '/admin/su/saveAddress2.htm',
+		url:  prefix + '/admin/rest/saveAddress2.htm',
 		dataType: 'json',
 		async: true,
 		success: function(result) {
@@ -202,7 +229,7 @@ ${ind.index} = ${addr}
                             <TR class="addressTableHeader">
                                 <TD height="35"><INPUT name="addressList[${ind.index}].id" type="hidden"
                                     id="addressList[${ind.index}].id" value="${addr.id}"> <INPUT
-                                    name="addressList[${ind.index}].personId" type="hidden" id="addressList[${ind.index}].personId"
+                                    name="personId" type="hidden" id="personId"
                                     value="${frmUser.id}"></TD>
                                 <TD height="35">Address</TD>
                                 <TD class="trDashedUL">&nbsp;</TD>
@@ -234,7 +261,7 @@ ${ind.index} = ${addr}
                                         :</LABEL></TD>
                                 <TD class="trDashedUL"><SPAN id="lstreet${ind.index}">${addr.street}</SPAN><INPUT
                                     name="addressList[${ind.index}].street" type="text" disabled class="inputFullSize"
-                                    id="addressList[${ind.index}].street" autocomplete="off" value="${addr.city}" readonly
+                                    id="addressList[${ind.index}].street" autocomplete="off" value="${addr.street}" readonly
                                     style="display: none"></TD>
                                 <TD class="trDashedUL"><DIV class="errorMsg">${faErr.street}</DIV></TD>
                             </TR>

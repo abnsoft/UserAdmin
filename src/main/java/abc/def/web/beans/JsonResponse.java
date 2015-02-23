@@ -25,7 +25,9 @@ public class JsonResponse<T> {
         ERROR, //
     }
 
-    private StatusResponse status;
+    private StatusResponse status = StatusResponse.ERROR;
+
+    private String message;
 
     private T result;
 
@@ -69,6 +71,27 @@ public class JsonResponse<T> {
     public void setObject( T object ) {
 
         this.result = object;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the message
+     */
+    public String getMessage() {
+
+        return message;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param message
+     *            the message to set
+     */
+    public void setMessage( String message ) {
+
+        this.message = message;
     }
 
 }

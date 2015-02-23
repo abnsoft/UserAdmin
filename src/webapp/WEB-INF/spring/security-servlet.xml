@@ -35,6 +35,9 @@
         <intercept-url
             pattern="/admin/su/**"
             access="ROLE_EDITOR" />
+        <intercept-url
+            pattern="/admin/rest/**"
+            access="ROLE_EDITOR" />
 
         <form-login
             login-page="/login.htm"

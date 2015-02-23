@@ -38,6 +38,8 @@ public class FormAddress {
 
     private Map<String, String> errorsMap = new HashMap<String, String>();
 
+    private Long personId;
+
     /**
      * Getter.
      * 
@@ -90,5 +92,33 @@ public class FormAddress {
 
         this.addressList = addressList;
     }
+
+    /** Getter.
+     * @return the personId
+     */
+    public Long getPersonId() {
+
+        return personId;
+    }
+
+    /** Setter.
+     * @param personId the personId to set
+     */
+    public void setPersonId( Long personId ) {
+
+        this.personId = personId;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+        return String.format( "FormAddress [addressList=%s, errorsMap=%s, personId=%s]", addressList,
+                errorsMap, personId );
+    }
+
+    
 
 }

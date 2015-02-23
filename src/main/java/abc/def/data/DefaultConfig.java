@@ -27,4 +27,6 @@ public class DefaultConfig {
     public static final String WEB_PAGE_EXTENSTION = ".htm";
 
     public static final String SESSION_USER_ROLE = "userRole";
+
+    public static final String SESSION_CUR_LOCALE = "curLocale";
 }

@@ -81,4 +81,12 @@ public interface PersonService {
      */
     void updateSessionForPerson( HttpSession session, String email );
 
+    /**
+     * Save or Merge {@link Person}.
+     * 
+     * @param selectedPerson
+     * @return 
+     */
+    Person save( Person selectedPerson );
+
 }
