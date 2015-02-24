@@ -116,8 +116,15 @@ public class AddressController {
                     selectedPerson.removeAddress( dbAddress );
                     personService.save( selectedPerson );
 
-                    // create changed address as new, ID w/o persons set.
-                    addr = addr.clone();
+                    // create changed address as new (id=0), ID w/o persons set.
+                    addr = addr.copyAddress();
+
+                    // check db for such address unique 
+                    Address checkAddress = addressService.existAddress( addr );
+                    if ( checkAddress != null ) {
+                        // found existing address in DB, replace it  
+                        addr = checkAddress.clone();
+                    }
 
                     // add new address to user 
                     selectedPerson.addAddress( addr );
@@ -155,8 +162,8 @@ public class AddressController {
 
     @RequestMapping( value = PATH_ADMIN_REST + "/testRest" /* , method = RequestMethod.POST */)
     @ResponseBody
-    public JsonResponse<Address> testREST( @ModelAttribute FormAddress frmAddr,
-            HttpServletRequest request, HttpServletResponse response, BindingResult result ) {
+    public JsonResponse<Address> testREST( @ModelAttribute FormAddress frmAddr, HttpServletRequest request,
+            HttpServletResponse response, BindingResult result ) {
 
         JsonResponse<Address> jsonResponse = new JsonResponse<Address>();
         Address addr = new Address();

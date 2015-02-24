@@ -12,26 +12,19 @@
  */
 package abc.def.web.controller;
 
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-import org.joda.time.tz.DateTimeZoneBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -40,19 +33,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import abc.def.data.DefaultConfig;
 import abc.def.data.UserRole;
 import abc.def.data.Utils;
 import abc.def.data.Utils.U;
-import abc.def.data.beans.FormAddress;
-import abc.def.data.beans.FormRegister;
 import abc.def.data.beans.FormUser;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
@@ -101,6 +90,8 @@ public class AdminSuController {
     public ModelAndView userShowCard( @RequestParam( value = "userId", required = false ) Long userId,
             HttpServletRequest request ) {
 
+        LOG.debug( "UserInfo GET" );
+
         ModelAndView mav = new ModelAndView();
         if ( userId == null || userId == 0 ) {
             LOG.warn( "Invalid request!" );
@@ -114,6 +105,9 @@ public class AdminSuController {
             Person person = personRepository.findById( userId );
 
             mav.addObject( "frmUser", person );
+
+            mav.addObject( "frmUserJsOnlyOneNewAddress",
+                    U.getMsg( "frmUser.js.onlyOneNewAddress", messageSource, null, request ) );
 
             frmUserCommon( request, mav );
 
@@ -136,6 +130,8 @@ public class AdminSuController {
     public ModelAndView editUserSave( @ModelAttribute @Validated FormUser frmUser, BindingResult result,
             HttpServletRequest request ) {
 
+        LOG.debug( "UserInfo POST" );
+
         ModelAndView mav = new ModelAndView();
         // get real date to replace not updated date 
         Person person = personRepository.findById( frmUser.getId() );
@@ -153,6 +149,9 @@ public class AdminSuController {
                 errorsMap.put( error.getCode(), messageSource.getMessage( error, Locale.ENGLISH ) );
             }
             mav.addObject( "frmUserErr", errorsMap );
+
+            mav.addObject( "frmUserJsOnlyOneNewAddress",
+                    U.getMsg( "frmUser.js.onlyOneNewAddress", messageSource, null, request ) );
 
             frmUserCommon( request, mav );
 

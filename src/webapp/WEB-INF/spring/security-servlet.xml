@@ -13,16 +13,6 @@
         http://www.springframework.org/schema/security/spring-security-3.2.xsd"
 >
 
-    <!-- <global-method-security secured-annotations="enabled" /> -->
-
-<!--     <http
-        pattern="/rs/**"
-        security="none" />
-    <http
-        pattern="/login.htm*"
-        security="none" />
- -->
-
     <http
         pattern="/admin/rest/*"
         security="none" />
@@ -52,6 +42,12 @@
         <logout
             logout-url="/logout"
             logout-success-url="/" />
+
+        <!-- enable remember me for ~90 days -->
+        <remember-me
+            token-validity-seconds="7700700"
+            remember-me-parameter="remember-me"
+            data-source-ref="dataSourceDB1" />
 
     </http>
 

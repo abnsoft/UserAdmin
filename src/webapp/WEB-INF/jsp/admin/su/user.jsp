@@ -15,6 +15,8 @@
 $(document).ready(function() {
 		var count=0;
 		$('#moreAddr').click( function () {
+			console.log( count ) ;
+			if(count>0){alert("${frmUserJsOnlyOneNewAddress}");};
 			count++;
 			var Clonedtable = $("#addTMPL").clone(true).html(function(i, oldHTML){
 				oldHTML = oldHTML.replace(/addressListX/g, "addressList["+count+"]");
@@ -36,25 +38,6 @@ try{
 
 	// function for edit address link 
 	function editAddr(id) { 
-		/*
-		var f = document.forms['fa'+id];
-		$("#addrEdit"+id).hide(0);
-		for(i=0;i<frmEl.length;i++){
-			s=frmEl[i];
-			se='#addressList\\['+id+'\\]\\.'+s;
-			sl='#l'+s+id;
-			$(sl).hide(0);
-			
-			$(se).attr('disabled', false);
-			$(se).attr('readonly', false);
-			$(se).fadeIn("slow");			
-		}
-		// define post handler 
-		sb="#addrSubmit"+id;
-		$(sb).attr('disabled', false);
-		$(sb).fadeIn("slow");
-//		$("#selectedFrmId").val(id);
-		*/
 		f1(false,true,id);
 		//
 		$(sb).click(function(){
@@ -67,17 +50,19 @@ try{
 					console.log("SUCCESS");				
 					// we have the response
 					if(response.status == "OK"){
-						 console.log("AJAX OK");
-						 var r=response.object;
-						 console.log( "res="+response.object );
-						 f2(r,id);
+						console.log("AJAX OK");
+						var r=response.object;
+						console.log( "res="+response.object );
+						fMsg(response.message,"msgSuccess",id);
+						f2(r,id);
 					 }else{
-						 console.log("AJAX ERROR : "+response.message);
-						 errorInfo = "";
-						alert(" ERROR "+response ) ;
+						console.log("AJAX ERROR : "+response.message);
+						errorInfo = "";
+						fMsg(response.message,"msgError");
 					 }
 				 },
 				 error: function(e){
+	
 					 alert('Error: ' + e);
 				 }
 			});
@@ -85,61 +70,52 @@ try{
 
 		})
 	}
-	// ------ fade=true => IN, false => OUT
+	// ---------------------
+	var fMsg=function(m,c,id){
+		var s="#lFrmAddress"+id;
+		$(s).attr( "class", c );
+		$(s).html(m);
+		$(s).fadeIn("500");
+		setTimeout(function() {
+    		$(s).fadeOut('slow');
+		}, 5000); // <-- time in milliseconds
+	};
+	// ------ fade=true => IN, false => OUT=hide
 	var f1=function(status,fade,id){
-		alert('a1');
 		var f = document.forms['fa'+id];
-		if(fade){$("#addrEdit"+id).hide(0);}else{$("#addrEdit"+id).show(0);}
+		if(fade){$("#addrEdit"+id).hide(0);}else{$("#addrEdit"+id).fadeIn("slow");}
 		for(i=0;i<frmEl.length;i++){
 			s=frmEl[i];
 			se='#addressList\\['+id+'\\]\\.'+s;
 			sl='#l'+s+id;
-			$(sl).hide(0);
+			if(fade){$(sl).hide(0);}else{$(sl).fadeIn("slow");}
 			
 			$(se).attr('disabled', status);	// f
 			$(se).attr('readonly', status);	// f
-			if(fade){$(se).fadeIn("slow");}else{$(se).fadeOut("slow");};
+			if(fade){$(se).fadeIn("slow");}else{$(se).fadeOut(0);};
 		}
 		// define post handler 
 		sb="#addrSubmit"+id;
 		$(sb).attr('disabled', status);	// f
-		if(fade){$(sb).fadeIn("slow");}else{$(sb).fadeOut("slow");}
+		if(fade){$(sb).fadeIn("slow");}else{$(sb).fadeOut(0);}
 	};
 	// ------ 
 	var f2=function(r,id){
-		alert("a2+"+id);
 		// labels 
-		//$("#laddressId"+id).html(r.id);
+		$("#laddressId"+id).html(r.id);
 		$("#lcountry"+id).html(r.country);
 		$("#lcity"+id).html(r.city);
 		$("#lstreet"+id).html(r.street);
 		$("#lhouseNumber"+id).html(r.houseNumber);
 		// form
-		//$("#addressList\\["+id+"\\]\\.id").html(r.id);
-		$("#addressList\\["+id+"\\]\\.country").html(r.country);
-		$("#addressList\\["+id+"\\]\\.city").html(r.city);
-		$("#addressList\\["+id+"\\]\\.street").html(r.street);
-		$("#addressList\\["+id+"\\]\\.houseNumber").html(r.houseNumber);
+		$("#addressList\\["+id+"\\]\\.id").val(r.id);
+		$("#addressList\\["+id+"\\]\\.country").val(r.country);
+		$("#addressList\\["+id+"\\]\\.city").val(r.city);
+		$("#addressList\\["+id+"\\]\\.street").val(r.street);
+		$("#addressList\\["+id+"\\]\\.houseNumber").val(r.houseNumber);
 		// fade
 		f1(true,false,id);
 	};
-	// -------------------------------------------------------------
-	var RestPost = function() {
-		$.ajax({
-			type: 'POST',
-			url:  prefix + '/admin/rest/saveAddress2.htm',
-			dataType: 'json',
-			async: true,
-			success: function(result) {
-				alert('At ' + result.time
-					+ ': ' + result.message);
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status + ' ' + jqXHR.responseText);
-			}
-		});
-	}
-
 
 }catch(e){
 
@@ -257,8 +233,7 @@ try{
                         <TD class="trDashedUL"><DIV class="errorMsg"></DIV></TD>
                     </TR>
                 </TABLE> <c:forEach items="${addrList}" var="addr" varStatus="ind">
-${ind.index} = ${addr}
-
+                
 <FORM id="fa${ind.index}" action="${pageContext.request.contextPath}/admin/su/address.htm" method="post"
                         onSubmit="return checkAddress();">
                         <TABLE width="95%" border="0" cellspacing="0" cellpadding="0">
@@ -271,7 +246,7 @@ ${ind.index} = ${addr}
                                     name="selectedFrmId" type="hidden" id="selectedFrmId"
                                     value="${ind.index}"></TD>
                                 <TD height="35">[${ind.index+1}] Address</TD>
-                                <TD class="trDashedUL">&nbsp;</TD>
+                            <TD class="trDashedUL">&nbsp;<SPAN class="msgSuccess" id="lFrmAddress${ind.index}">&nbsp;</SPAN></TD>
                             </TR>
                             <TR class="trDashedUL">
                                 <TD height="35" class="trDashedUL">ID:</TD>

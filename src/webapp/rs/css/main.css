@@ -75,3 +75,18 @@ input[type=text], input[type=password],select {
 }
 
 .likeLink { cursor: pointer; }
+
+.msgSuccess {
+    font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+    font-size: 14px;
+    color: #090;
+    font-weight: bold;
+}
+
+.msgError
+{
+    font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+    font-size: 14px;
+    color: #F00;
+    font-weight: bold;
+}

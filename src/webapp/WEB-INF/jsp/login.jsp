@@ -4,13 +4,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML>
 <HEAD>
-<META http-equiv="Content-Type" content="text/html; charset=utf-8">
-<TITLE>Insert title here</TITLE>
+	<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<TITLE>Login</TITLE>
 
-<LINK href='<c:url value="/rs/css/main.css" />' rel='stylesheet' />
+	<LINK href='<c:url value="/rs/css/main.css" />' rel='stylesheet' />
+    
+    <SCRIPT type='text/javascript' src='<c:url value="/rs/js/jquery-2.1.3.js" />'></SCRIPT>
+	<SCRIPT type="text/javascript" >
+	$(document).ready(function() {
+		$("#j_username").focus();
+	});
+	</SCRIPT>
 
 </HEAD>
-<BODY onload='document.frm1.j_username.focus();'>
+<BODY>
 <TABLE width="500" border="0" align="center" cellpadding="0" cellspacing="0">
 <TR>
 <TD width="50%" height="30">&nbsp;</TD>
@@ -24,14 +31,14 @@
         <TR>
             <TD height="200" align="center" valign="top">
 <c:if test="${not empty loginError}">  
-  <div class="errorMsg">  
+  <DIV class="errorMsg">  
    <BR>
 Your login attempt was not successful.  
  <BR>
 Caused :  
    ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}  
   <BR>
-</div>  
+</DIV>  
  </c:if>  
  <BR>
 <FORM id="frm1" action="<c:url value='j_spring_security_check' />" method="post"
@@ -51,8 +58,8 @@ Caused :
                         </TR>
                         <TR>
                             <TD height="35">&nbsp;</TD>
-                            <TD align="left"><INPUT name="rememberMe" type="checkbox" id="rememberMe" tabindex="30">
-<LABEL for="rememberMe"> Remember me</LABEL></TD>
+                            <TD align="left"><INPUT name="remember-me" type="checkbox" id="remember-me" tabindex="30">
+<LABEL for="remember-me"> Remember me</LABEL></TD>
                             <TD><INPUT name="submit" type="submit" id="submit" tabindex="9999"
                                 value="  Войти  "></TD>
                         </TR>

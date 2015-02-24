@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
@@ -23,6 +24,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -126,4 +128,26 @@ public class Utils {
         }
         return tz;
     }
+
+    /**
+     * Try to resolve the message.
+     * 
+     * @param msgKey
+     *            - the code to lookup up, such as 'calculator.noRateSet'. Users of this class are encouraged
+     *            to base message names on the relevant fully qualified class name, thus avoiding conflict and
+     *            ensuring maximum clarity.
+     * @param messageSource
+     * @param objects
+     *            - array of arguments that will be filled in for params within the message (params look like
+     *            "{0}", "{1,date}", "{2,time}" within a message), or null if none.
+     * @param request
+     * @return message
+     */
+    public static String getMsg( String msgKey, ResourceBundleMessageSource messageSource, Object[] objects,
+            HttpServletRequest request ) {
+
+        return messageSource.getMessage( msgKey, objects,
+                (Locale) request.getSession().getAttribute( "curLocale" ) );
+    }
+
 }

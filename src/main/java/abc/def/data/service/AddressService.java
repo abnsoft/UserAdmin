@@ -28,4 +28,12 @@ public interface AddressService {
      */
     Address findAddressById( Long addressId );
 
+    /**
+     * Check {@link Address} is it exist ?
+     * 
+     * @param address
+     * @return {@link Address}
+     */
+    Address existAddress( Address address );
+
 }

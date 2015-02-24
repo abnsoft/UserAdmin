@@ -41,4 +41,11 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findOne( addressId );
     }
 
+    @Override
+    public Address existAddress( Address address ) {
+
+        return addressRepository.findByCountryAndCityAndStreetAndHouseNumber( address.getCountry(),
+                address.getCity(), address.getStreet(), address.getHouseNumber() );
+    }
+
 }
