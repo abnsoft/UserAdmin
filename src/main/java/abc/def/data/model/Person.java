@@ -283,7 +283,7 @@ public class Person implements Serializable {
     public void removeAddress( Address address ) {
 
         //avoid circular calls : assumes equals and hashcode implemented
-        if ( !addresses.contains( address ) ) {
+        if ( addresses.contains( address ) ) {
             addresses.remove( address );
 
             //add method to Product : sets 'other side' of association

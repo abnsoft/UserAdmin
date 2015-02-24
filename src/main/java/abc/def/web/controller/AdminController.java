@@ -30,9 +30,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import abc.def.data.beans.FormUsersList;
 import abc.def.data.model.Person;
 import abc.def.data.service.PersonService;
-import abc.def.web.beans.FormUsersList;
 
 /**
  * @author annik

@@ -10,7 +10,7 @@
  * Created ..... 19 февр. 2015 г.<br>
  * <br>
  */
-package abc.def.web.beans;
+package abc.def.data.beans;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

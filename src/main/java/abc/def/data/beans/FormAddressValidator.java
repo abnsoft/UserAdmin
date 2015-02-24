@@ -7,26 +7,25 @@
  * <br>
  * Author ...... AnNik<br>
  * E-Mail ...... ABN.DEV@mail.ru<br>
- * Created ..... 20 февр. 2015 г.<br>
+ * Created ..... 19 февр. 2015 г.<br>
  * <br>
  */
-package abc.def.web.beans;
+package abc.def.data.beans;
 
-import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import abc.def.data.model.Person;
-import static abc.def.data.Utils.U.*;
 
 /**
  * @author annik
  *
  */
-@Component( "frmUserValidator" )
-public class FormUserValidator implements Validator {
+@Component( "frmAddressValidator" )
+public class FormAddressValidator implements Validator {
+
+    private static final Logger LOG = LoggerFactory.getLogger( FormAddressValidator.class );
 
     /*
      * (non-Javadoc)
@@ -35,8 +34,7 @@ public class FormUserValidator implements Validator {
     @Override
     public boolean supports( Class<?> clazz ) {
 
-//        return FormUser.class.equals( clazz );
-        return Person.class.equals( clazz ) || FormUser.class.equals( clazz );
+        return FormAddress.class.equals( clazz );
     }
 
     /*
@@ -47,23 +45,20 @@ public class FormUserValidator implements Validator {
     @Override
     public void validate( Object target, Errors errors ) {
 
-        FormUser form = (FormUser) target;
+        FormAddress form = (FormAddress) target;
 
         if ( form == null ) {
-            errors.rejectValue( "form", "valid.frmUser.form" );
-
+            errors.rejectValue( "form", "valid.frmReg.form" );
         } else {
 
-            if ( StringUtils.isBlank( form.getEmail() ) || !form.getEmail().matches( EMAIL_PATTERN ) ) {
-                errors.rejectValue( "email", "valid.frmUser.email" );
-            }
-
-            ValidationUtils.rejectIfEmptyOrWhitespace( errors, "fullName", "valid.frmUser.fullName" );
-
-//            if ( form.getRole().equals( anObject ) ) {
-//                
+            // TODO : IMPLEMENT ADDRESS VALIDATION ! 
+            
+//            if ( StringUtils.isBlank( form.getEmail() ) || !form.getEmail().matches( EMAIL_PATTERN ) ) {
+//                errors.rejectValue( "email", "valid.frmReg.email" );
 //            }
-//            
+//
+//            ValidationUtils.rejectIfEmptyOrWhitespace( errors, "password", "valid.frmReg.password" );
+//
 //            ValidationUtils.rejectIfEmptyOrWhitespace( errors, "password2", "valid.frmReg.passwordConf" );
 //
 //            if ( !form.isValidPassword() ) {
@@ -74,9 +69,17 @@ public class FormUserValidator implements Validator {
 //            if ( !form.getPassword().equals( form.getPassword2() ) ) {
 //                errors.rejectValue( "password2", "valid.frmReg.passwordConfDiff" );
 //            }
-
+//
+//            ValidationUtils.rejectIfEmptyOrWhitespace( errors, "fullName", "valid.frmReg.fullName" );
+//
+//            if ( form.getTimezone() == null ) {
+//                errors.rejectValue( "timezone", "valid.frmReg.timezone" );
+//            }
+            
+            // check Addresses not null 
+            
+            
         }
-
     }
 
 }

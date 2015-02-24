@@ -51,13 +51,13 @@ import abc.def.data.DefaultConfig;
 import abc.def.data.UserRole;
 import abc.def.data.Utils;
 import abc.def.data.Utils.U;
+import abc.def.data.beans.FormAddress;
+import abc.def.data.beans.FormRegister;
+import abc.def.data.beans.FormUser;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.repositories.PersonRepository;
 import abc.def.data.service.PersonService;
-import abc.def.web.beans.FormAddress;
-import abc.def.web.beans.FormRegister;
-import abc.def.web.beans.FormUser;
 
 /**
  * @author annik

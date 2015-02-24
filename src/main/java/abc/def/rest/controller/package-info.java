@@ -17,4 +17,4 @@
  * @author annik
  *
  */
-package abc.def.rest;
+package abc.def.rest.controller;

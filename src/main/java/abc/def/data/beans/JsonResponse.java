@@ -10,7 +10,7 @@
  * Created ..... 23 февр. 2015 г.<br>
  * <br>
  */
-package abc.def.web.beans;
+package abc.def.data.beans;
 
 /**
  * @author annik

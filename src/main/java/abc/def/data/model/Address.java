@@ -27,6 +27,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Addresses of person. <br />
  * One person can has many addresses. In that time many persons can live in one address (family).
@@ -76,6 +78,7 @@ public class Address implements Serializable {
      * Users who live at this Address.
      */
     @ManyToMany( fetch = FetchType.LAZY, mappedBy = "addresses", cascade = {CascadeType.ALL} )
+    @JsonIgnore
     public Collection<Person> persons = new HashSet<Person>( 0 );
 
     /**
@@ -235,12 +238,13 @@ public class Address implements Serializable {
     public void removePerson( Person person ) {
 
         //assumes equals and hashcode implemented: avoid circular calls
-        if ( !persons.contains( person ) ) {
+        if ( persons.contains( person ) ) {
             persons.remove( person );
+
+            //add method to Product : sets 'other side' of association
+            person.removeAddress( this );
         }
 
-        //add method to Product : sets 'other side' of association
-        person.removeAddress( this );
     }
 
     /*
@@ -283,6 +287,37 @@ public class Address implements Serializable {
             if ( other.street != null ) return false;
         } else if ( !street.equals( other.street ) ) return false;
         return true;
+    }
+
+    /**
+     * CLone {@link Address} without {@link Person}s.
+     */
+    public Address clone() {
+
+        Address newAddr = new Address();
+        newAddr.setId( this.id );
+        newAddr.setCountry( this.country );
+        newAddr.setCity( this.city );
+        newAddr.setStreet( this.street );
+        newAddr.setHouseNumber( this.houseNumber );
+
+        return newAddr;
+    }
+
+    /**
+     * Copy Address without ID. ID will be 0 (zero).
+     * 
+     * @return {@link Address}
+     */
+    public Address copyAddress() {
+
+        Address newAddr = new Address();
+        newAddr.setCountry( this.country );
+        newAddr.setCity( this.city );
+        newAddr.setStreet( this.street );
+        newAddr.setHouseNumber( this.houseNumber );
+
+        return newAddr;
     }
 
 }

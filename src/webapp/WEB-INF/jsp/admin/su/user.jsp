@@ -36,6 +36,7 @@ try{
 
 	// function for edit address link 
 	function editAddr(id) { 
+		/*
 		var f = document.forms['fa'+id];
 		$("#addrEdit"+id).hide(0);
 		for(i=0;i<frmEl.length;i++){
@@ -52,30 +53,27 @@ try{
 		sb="#addrSubmit"+id;
 		$(sb).attr('disabled', false);
 		$(sb).fadeIn("slow");
+//		$("#selectedFrmId").val(id);
+		*/
+		f1(false,true,id);
 		//
 		$(sb).click(function(){
+			//alert( $("#fa"+id).serialize() );
 			$.ajax({
 				type: "POST",
 				url: prefix + '/admin/rest/saveAddress',
 				data: $("#fa"+id).serialize(),
-				success: function(response){
-					
-					alert( response.status ) ;
-					alert( response.message ) ;
-					alert( response.result.country+" | "+response.result.city ) ;
+				success: function(response){	
+					console.log("SUCCESS");				
 					// we have the response
-					if(response.status == "SUCCESS"){
-						 alert( response ) ;
-						 
+					if(response.status == "OK"){
+						 console.log("AJAX OK");
+						 var r=response.object;
+						 console.log( "res="+response.object );
+						 f2(r,id);
 					 }else{
-						 console.log("AJAX ERROR");
+						 console.log("AJAX ERROR : "+response.message);
 						 errorInfo = "";
-						 for(i =0 ; i < response.result.length ; i++){
-							 errorInfo += "<br>" + (i + 1) +". " + response.result[i].code;
-						 }
-						 $('#error').html("Please correct following errors: " + errorInfo);
-						 $('#info').hide('slow');
-						 $('#error').show('slow');
 						alert(" ERROR "+response ) ;
 					 }
 				 },
@@ -87,22 +85,60 @@ try{
 
 		})
 	}
+	// ------ fade=true => IN, false => OUT
+	var f1=function(status,fade,id){
+		alert('a1');
+		var f = document.forms['fa'+id];
+		if(fade){$("#addrEdit"+id).hide(0);}else{$("#addrEdit"+id).show(0);}
+		for(i=0;i<frmEl.length;i++){
+			s=frmEl[i];
+			se='#addressList\\['+id+'\\]\\.'+s;
+			sl='#l'+s+id;
+			$(sl).hide(0);
+			
+			$(se).attr('disabled', status);	// f
+			$(se).attr('readonly', status);	// f
+			if(fade){$(se).fadeIn("slow");}else{$(se).fadeOut("slow");};
+		}
+		// define post handler 
+		sb="#addrSubmit"+id;
+		$(sb).attr('disabled', status);	// f
+		if(fade){$(sb).fadeIn("slow");}else{$(sb).fadeOut("slow");}
+	};
+	// ------ 
+	var f2=function(r,id){
+		alert("a2+"+id);
+		// labels 
+		//$("#laddressId"+id).html(r.id);
+		$("#lcountry"+id).html(r.country);
+		$("#lcity"+id).html(r.city);
+		$("#lstreet"+id).html(r.street);
+		$("#lhouseNumber"+id).html(r.houseNumber);
+		// form
+		//$("#addressList\\["+id+"\\]\\.id").html(r.id);
+		$("#addressList\\["+id+"\\]\\.country").html(r.country);
+		$("#addressList\\["+id+"\\]\\.city").html(r.city);
+		$("#addressList\\["+id+"\\]\\.street").html(r.street);
+		$("#addressList\\["+id+"\\]\\.houseNumber").html(r.houseNumber);
+		// fade
+		f1(true,false,id);
+	};
 	// -------------------------------------------------------------
 	var RestPost = function() {
 		$.ajax({
-		type: 'POST',
-		url:  prefix + '/admin/rest/saveAddress2.htm',
-		dataType: 'json',
-		async: true,
-		success: function(result) {
-			alert('At ' + result.time
-				+ ': ' + result.message);
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status + ' ' + jqXHR.responseText);
-		}
-	});
-}
+			type: 'POST',
+			url:  prefix + '/admin/rest/saveAddress2.htm',
+			dataType: 'json',
+			async: true,
+			success: function(result) {
+				alert('At ' + result.time
+					+ ': ' + result.message);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status + ' ' + jqXHR.responseText);
+			}
+		});
+	}
 
 
 }catch(e){
@@ -230,8 +266,11 @@ ${ind.index} = ${addr}
                                 <TD height="35"><INPUT name="addressList[${ind.index}].id" type="hidden"
                                     id="addressList[${ind.index}].id" value="${addr.id}"> <INPUT
                                     name="personId" type="hidden" id="personId"
-                                    value="${frmUser.id}"></TD>
-                                <TD height="35">Address</TD>
+                                    value="${frmUser.id}">
+<INPUT
+                                    name="selectedFrmId" type="hidden" id="selectedFrmId"
+                                    value="${ind.index}"></TD>
+                                <TD height="35">[${ind.index+1}] Address</TD>
                                 <TD class="trDashedUL">&nbsp;</TD>
                             </TR>
                             <TR class="trDashedUL">

@@ -42,11 +42,11 @@ import abc.def.data.ActionResult;
 import abc.def.data.DefaultConfig;
 import abc.def.data.UserRole;
 import abc.def.data.Utils.U;
+import abc.def.data.beans.FormRegister;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.repositories.AddressRepository;
 import abc.def.data.repositories.PersonRepository;
-import abc.def.web.beans.FormRegister;
 
 /**
  * @author annik

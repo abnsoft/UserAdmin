@@ -16,4 +16,4 @@
  * @author annik
  *
  */
-package abc.def.web.beans;
+package abc.def.data.beans;

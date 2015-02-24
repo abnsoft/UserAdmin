@@ -40,10 +40,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import abc.def.data.Utils;
+import abc.def.data.beans.FormRegister;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
 import abc.def.data.service.PersonService;
-import abc.def.web.beans.FormRegister;
 
 /**
  * @author annik

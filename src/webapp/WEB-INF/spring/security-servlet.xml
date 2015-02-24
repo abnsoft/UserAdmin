@@ -23,6 +23,10 @@
         security="none" />
  -->
 
+    <http
+        pattern="/admin/rest/*"
+        security="none" />
+
     <http auto-config="true">
         <session-management>
             <concurrency-control
@@ -35,14 +39,15 @@
         <intercept-url
             pattern="/admin/su/**"
             access="ROLE_EDITOR" />
-        <intercept-url
+
+        <!-- <intercept-url
             pattern="/admin/rest/**"
-            access="ROLE_EDITOR" />
+            access="ROLE_EDITOR" /> -->
 
         <form-login
             login-page="/login.htm"
             default-target-url="/admin/logined.htm"
-            authentication-failure-url="/loginFailed.htm"  />
+            authentication-failure-url="/loginFailed.htm" />
 
         <logout
             logout-url="/logout"

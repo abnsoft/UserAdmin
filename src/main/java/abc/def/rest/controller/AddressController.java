@@ -10,7 +10,7 @@
  * Created ..... 23 февр. 2015 г.<br>
  * <br>
  */
-package abc.def.rest;
+package abc.def.rest.controller;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -33,14 +33,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import abc.def.data.beans.FormAddress;
+import abc.def.data.beans.JsonResponse;
+import abc.def.data.beans.JsonResponse.StatusResponse;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
-import abc.def.data.repositories.PersonRepository;
 import abc.def.data.service.AddressService;
 import abc.def.data.service.PersonService;
-import abc.def.web.beans.FormAddress;
-import abc.def.web.beans.JsonResponse;
-import abc.def.web.beans.JsonResponse.StatusResponse;
 
 /**
  * This controller is invoked under URL : {context}/admin/rest/*
@@ -82,7 +81,7 @@ public class AddressController {
      * @param request
      * @return
      */
-    @RequestMapping( value = PATH_ADMIN_REST + "/saveAddress", method = RequestMethod.POST )
+    @RequestMapping( value = PATH_ADMIN_REST + "/saveAddress" /* , method = RequestMethod.POST */)
     @ResponseBody
     public JsonResponse<Address> saveAddress( @ModelAttribute FormAddress frmAddr,
             HttpServletRequest request, HttpServletResponse response, BindingResult result ) {
@@ -103,46 +102,74 @@ public class AddressController {
             Person selectedPerson = personService.getPersonById( frmAddr.getPersonId() );
             Objects.requireNonNull( selectedPerson );
 
-            if ( frmAddr.getAddressList().size() == 1 ) {
-                addr = frmAddr.getAddressList().get( 0 );
+            // if address exists in form data
+            if ( frmAddr.getAddressList() != null
+                    && frmAddr.getAddressList().size() >= frmAddr.getSelectedFrmId() ) {
+
+                addr = frmAddr.getAddressList().get( frmAddr.getSelectedFrmId() );
+
                 Address dbAddress = addressService.findAddressById( addr.getId() );
 
                 if ( !addr.equals( dbAddress ) ) {
-                    // delete old address from user, store . 
+
+                    // delete address that changed from person 
                     selectedPerson.removeAddress( dbAddress );
                     personService.save( selectedPerson );
 
-                    // create changed address as new 
-                    addr.setId( 0 );
+                    // create changed address as new, ID w/o persons set.
+                    addr = addr.clone();
 
                     // add new address to user 
                     selectedPerson.addAddress( addr );
 
-                    // store with new address
-                    personService.save( selectedPerson );
+                    // get new update address 
+                    selectedPerson = personService.save( selectedPerson );
+                    for (Address tmpAddr : selectedPerson.getAddresses()) {
+                        if ( tmpAddr.equals( addr ) ) {
+                            addr = tmpAddr.clone();
+                            break;
+                        }
+                    }
+
+                    jsonResponse.setStatus( StatusResponse.OK );
+                    jsonResponse.setMessage( messageSource.getMessage( "addressController.address.updated",
+                            null, (Locale) request.getSession().getAttribute( "curLocale" ) ) );
+
                 } else {
                     // address has not been changed, not error
                     jsonResponse.setStatus( StatusResponse.OK );
                     jsonResponse.setMessage( messageSource.getMessage( "addressController.unchaged.address",
                             null, (Locale) request.getSession().getAttribute( "curLocale" ) ) );
-                    jsonResponse.setObject( addr );
                 }
+                jsonResponse.setObject( addr );
 
             } else {
-                LOG.error( "Address should be ONE, but it is [{" + frmAddr.getAddressList().size() + "}] " );
+                jsonResponse.setMessage( messageSource.getMessage( "addressController.address.invalid.form",
+                        null, (Locale) request.getSession().getAttribute( "curLocale" ) ) );
             }
+
         }
 
         return jsonResponse;
     }
 
-    @RequestMapping( value = PATH_ADMIN_REST + "/saveAddress", method = RequestMethod.GET )
+    @RequestMapping( value = PATH_ADMIN_REST + "/testRest" /* , method = RequestMethod.POST */)
     @ResponseBody
-    public String saveAddressGet( @ModelAttribute FormAddress frmAddr, HttpServletRequest request ) {
+    public JsonResponse<Address> testREST( @ModelAttribute FormAddress frmAddr,
+            HttpServletRequest request, HttpServletResponse response, BindingResult result ) {
 
-        LOG.debug( "JSON GET address update is invoked." );
+        JsonResponse<Address> jsonResponse = new JsonResponse<Address>();
+        Address addr = new Address();
+        addr.setId( 10 );
+        addr.setCountry( "RU" );
+        addr.setCity( "SPB" );
+        addr.setStreet( "Oboynaya" );
+        addr.setHouseNumber( 22 );
 
-        return "0";
+        jsonResponse.setMessage( "Message response" );
+        jsonResponse.setObject( addr );
+
+        return jsonResponse;
     }
 
 }

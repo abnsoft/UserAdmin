@@ -22,10 +22,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 
 import abc.def.data.ActionResult;
+import abc.def.data.beans.FormRegister;
 import abc.def.data.exception.PersonRegisterException;
 import abc.def.data.model.Address;
 import abc.def.data.model.Person;
-import abc.def.web.beans.FormRegister;
 
 /**
  * @author annik

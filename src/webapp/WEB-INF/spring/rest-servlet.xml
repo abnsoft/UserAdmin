@@ -9,29 +9,37 @@
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:mvc="http://www.springframework.org/schema/mvc"
     xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-    xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/jee 
+        http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
 >
 
-<!--     Auto scan the components
-    <context:annotation-config />
-    <context:component-scan base-package="abc.def" />
- -->
-    <context:component-scan base-package="abc.def.web" />
+    <!-- Auto scan the components  -->
+    <context:component-scan base-package="abc.def.rest" />
 
     <mvc:annotation-driven />
 
-    <mvc:resources
+
+<!--     <mvc:resources
         mapping="/rs/**"
         location="/rs/" />
     <mvc:resources
         mapping="/SpryAssets/**"
         location="/SpryAssets/" />
+
+    <mvc:annotation-driven />
+    _class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+    class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 
     <bean
         id="viewResolver"
@@ -44,7 +52,7 @@
             name="suffix"
             value=".jsp" />
     </bean>
-<!-- 
+
     <bean
         id="messageSource"
         class="org.springframework.context.support.ResourceBundleMessageSource"
@@ -54,8 +62,10 @@
             value="validation" />
     </bean>
  -->
+
     <bean
         id="messageSource"
         parent="messageSourceRoot" />
- 
+
+
 </beans>
