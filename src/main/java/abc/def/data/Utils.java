@@ -24,17 +24,24 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+
+import abc.def.data.model.Person;
 
 /**
  * @author annik
  *
  */
 public class Utils {
+
+    private static final Logger LOG = LoggerFactory.getLogger( Utils.class );
 
     /**
      * Use this constant to add redirection in MVC. "redirect:/myPage.htm"
@@ -150,4 +157,38 @@ public class Utils {
                 (Locale) request.getSession().getAttribute( "curLocale" ) );
     }
 
+    /**
+     * Find in SPRING User details. Used with spring-SECURITY.
+     * 
+     * @param request
+     * @return User.username
+     */
+    public static final User findSpringUser( HttpServletRequest request ) {
+
+        User foundUser = null;
+
+        if ( request != null && request.getSession() != null ) {
+            SecurityContext ctx =
+                    (SecurityContext) request.getSession().getAttribute( "SPRING_SECURITY_CONTEXT" );
+
+            if ( ctx != null ) {
+                Authentication auth = ctx.getAuthentication();
+                if ( auth != null && auth.getPrincipal() != null ) {
+                    foundUser = ( (User) auth.getPrincipal() );
+
+                } else {
+                    LOG.error( "SPRING Authentication or Principal is NULL!" );
+                }
+
+            } else {
+                LOG.error( "SPRING SecurotyContext is NULL!" );
+            }
+
+        } else {
+            LOG.error( "HttpServletRequest or Session is NULL!" );
+        }
+
+        return foundUser;
+
+    }
 }

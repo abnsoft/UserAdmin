@@ -22,10 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +48,8 @@ import abc.def.data.service.PersonService;
 @Controller
 public class RootController {
 
+    public static final String ROOT_LOGIN_HTM = "/login.htm";
+
     private static final Logger LOG = LoggerFactory.getLogger( RootController.class );
 
     @Autowired
@@ -76,7 +74,7 @@ public class RootController {
      * @param response
      * @return
      */
-    @RequestMapping( value = {"index.htm", "/login.htm"}, method = RequestMethod.GET )
+    @RequestMapping( value = {"/index.htm", ROOT_LOGIN_HTM}, method = RequestMethod.GET )
     public String login( HttpServletRequest request ) {
 
         LOG.debug( "requested page : index.htm or login.htm" );

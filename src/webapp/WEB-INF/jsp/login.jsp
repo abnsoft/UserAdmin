@@ -68,12 +68,13 @@ Caused :
                             <TD>&nbsp;</TD>
                             <TD>&nbsp;</TD>
                         </TR>
-                    </TABLE>
-                </FORM>
+</TABLE>
+            </FORM>
             </TD>
         </TR>
-    </TABLE>
-    <P>
+</TABLE>
+<P>
         <A href="${pageContext.request.contextPath}/register.htm">Register new user</A></P>
+<DIV id="footer">Content for  id "footer" Goes Here</DIV>
 </BODY>
 </HTML>

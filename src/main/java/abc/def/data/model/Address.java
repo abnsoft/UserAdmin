@@ -320,4 +320,12 @@ public class Address implements Serializable {
         return newAddr;
     }
 
+    /**
+     * 
+     * @return TRUE when country< city, Street, HouseNumber are NULL.
+     */
+    public boolean isBlank() {
+
+        return this.country == null && this.city == null && this.street == null && this.houseNumber == null;
+    }
 }

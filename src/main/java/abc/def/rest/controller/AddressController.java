@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import abc.def.data.Utils.U;
 import abc.def.data.beans.FormAddress;
 import abc.def.data.beans.JsonResponse;
 import abc.def.data.beans.JsonResponse.StatusResponse;
@@ -110,7 +111,11 @@ public class AddressController {
 
                 Address dbAddress = addressService.findAddressById( addr.getId() );
 
-                if ( !addr.equals( dbAddress ) ) {
+                if ( addr.isBlank() ) {
+                    jsonResponse.setMessage( U.getMsg( "AddressController.Address.IsBlank", messageSource,
+                            null, request ) );
+
+                } else if ( !addr.equals( dbAddress ) ) {
 
                     // delete address that changed from person 
                     selectedPerson.removeAddress( dbAddress );
