@@ -100,4 +100,6 @@ input[type=text], input[type=password],select {
     background-color: #F2F2F2;
     vertical-align: middle;
     text-align: center;
+    visibility: hidden;
+    display: none;
 }
